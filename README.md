@@ -14,6 +14,16 @@ offers and swimms in deep water of denormalized data.
 Fb blue print and model tool is here to help in this battle.  The project aims to create factory method which creates firebase friendly data mapper, where in blue print we
 define the structure and relations and let the model figure out all the denormalized data.
 
+## Thoughts
+list can contain two type of object
+#####primary
+object have unique indetifier and are primary object, this means if the key appears somewhere else in the tree it is refering to this object
+#####reference
+this is object refering to primary object. 
+reference can be as simple as {KEY:true} creating a simple list of references (perhaps stored by timestamp priority)
+but it can contain denormalized parts from primary object, or other informative objects like counters
+reference ibject can't be refered again by another reference
+
 ## example
 ### simple user object
 
