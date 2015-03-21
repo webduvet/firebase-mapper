@@ -33,17 +33,31 @@ define the structure and relations and let the model figure out all the denormal
 first afgument is name of the 'class'
 second argument is construct saying it is object (not a list) and defines all the properties of the object
 
-		var user = BpFactore.create('app.user', bprint);
+	var user = BpFactore.create('app.user', bprint);
 
-		user is expected to do
-		user.name = name; // sets name\
-		user.info.gender = "male" sets gender
+user is expected to do the following operations
 
-		user.info.gender.write(); // write into location
-		rule: the parent location must be already in DB otherwise is thrown error - can't write to non existent location
+set objects' property
+	user.name = name;
 
-		user.info.write - writes the whole info object in DB (user must be already written)
-		user.write() writes the whole user into DB with default fields if not initialized.
+set deep nested onjects' property
+	user.info.gender = "male" sets gender
+
+write deep nested obbjects' property into DB
+	user.info.gender.write(); // write into location
+
+rule: the parent location must be already in DB otherwise is thrown error - can't write to non existent location
+
+write whole nested object in DB at once (overwite all inner properies)
+	user.info.write() - writes the whole info object in DB (user must be already written)
+
+write the whole object into DB which overwrites all the inner properties or objects
+	user.write() writes the whole user into DB with default fields if not initialized.
+
+TODO
+the object and nested objects should have flag saying auto update, so all changes on DB can be immediatelly propagated into object
+with this we need to wait with save until the read/update is finished.
+it either should throw and error, wrning or just updates the just read property. TODO - decide
 ...
 
 TODO
