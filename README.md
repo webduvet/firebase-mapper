@@ -21,8 +21,8 @@ object have unique indetifier and are primary object, this means if the key appe
 #####reference
 this is object refering to primary object. 
 reference can be as simple as {KEY:true} creating a simple list of references (perhaps stored by timestamp priority)
-but it can contain denormalized parts from primary object, or other informative objects like counters
-reference ibject can't be refered again by another reference
+but it can contain denormalized parts from primary object, or other informative objects like counters.
+Reference object can't be refered again by another reference.
 
 ## example
 ### simple user object
