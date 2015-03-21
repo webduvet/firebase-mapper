@@ -15,7 +15,34 @@ Fb blue print and model tool is here to help in this battle.  The project aims t
 define the structure and relations and let the model figure out all the denormalized data.
 
 ## example
+### simple user object
 
+var BpFactory = new Mapper(reference)
+
+var bprint = {'user', ['object', 
+	{
+		name:'text', 
+		surname:'text', 
+		info:['object', { 
+			gender: TXT, 
+			active: BOOL
+		}]
+	}
+]};
+
+first afgument is name of the 'class'
+
+var user = BpFactore.create('app.user', bprint);
+
+user is expected to do
+user.name = name; // sets name\
+user.info.gender = "male" sets gender
+
+user.info.gender.write(); // write into location
+rule: the parent location must be already in DB otherwise is thrown error - can't write to non existent location
+
+user.info.write - writes the whole info object in DB (user must be already written)
+user.write() writes the whole user into DB with default fields if not initialized.
 ...
 
 TODO
