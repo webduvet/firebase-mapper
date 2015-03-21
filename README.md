@@ -38,20 +38,25 @@ second argument is construct saying it is object (not a list) and defines all th
 user is expected to do the following operations
 
 set objects' property
+
 	user.name = name;
 
 set deep nested onjects' property
+
 	user.info.gender = "male" sets gender
 
 write deep nested obbjects' property into DB
+
 	user.info.gender.write(); // write into location
 
 rule: the parent location must be already in DB otherwise is thrown error - can't write to non existent location
 
 write whole nested object in DB at once (overwite all inner properies)
+
 	user.info.write() - writes the whole info object in DB (user must be already written)
 
 write the whole object into DB which overwrites all the inner properties or objects
+
 	user.write() writes the whole user into DB with default fields if not initialized.
 
 TODO
