@@ -17,20 +17,21 @@ define the structure and relations and let the model figure out all the denormal
 ## example
 ### simple user object
 
-		var BpFactory = new Mapper(reference)
+	var BpFactory = new Mapper(reference)
 
-		var bprint = {'user', ['object', 
-			{
-				name:'text', 
-				surname:'text', 
-				info:['object', { 
-					gender: TXT, 
-					active: BOOL
-				}]
-			}
-		]};
+	var bprint = {'user', ['object', 
+		{
+			name:'text', 
+			surname:'text', 
+			info:['object', { 
+				gender: TXT, 
+				active: BOOL
+			}]
+		}
+	]};
 
 first afgument is name of the 'class'
+second argument is construct saying it is object (not a list) and defines all the properties of the object
 
 		var user = BpFactore.create('app.user', bprint);
 
