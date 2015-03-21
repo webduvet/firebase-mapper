@@ -24,6 +24,19 @@ reference can be as simple as {KEY:true} creating a simple list of references (p
 but it can contain denormalized parts from primary object, or other informative objects like counters.
 Reference object can't be refered again by another reference.
 
+##### update
+set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
+the same will apply otjer way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
+it will update the value and trigger the event `new_content`
+better:
+two flags
+
+	watch_remote: BOOL
+	watch_local: BOOL
+
+if true the object will be synchronyzing with FB
+if the synchrozisation fails for varoius reasons the coresponding event is fired like `lost_connection`
+
 ## example
 ### simple user object
 
