@@ -24,6 +24,28 @@ reference can be as simple as {KEY:true} creating a simple list of references (p
 but it can contain denormalized parts from primary object, or other informative objects like counters.
 Reference object can't be refered again by another reference.
 
+#####Init part
+ModelFactory needs to be instantiated with valid db reference like
+
+	var mf = new ModelFactory( new Firebase('url') );
+
+ModelFactory assumes the reference refers to root of the database and all other objects declared are in the root level
+
+	var myItem = mf.create("status", ['value', 'active' ]);
+	myItem.write();
+	myItem.on('written', function(){ //do something });
+	myItem = 'pushed';
+	myItem.write();
+
+also consider:
+
+	muItem
+		.set('pushed') 	//sets on model
+		.write(); 			//writes to db
+
+creates simple object called 'status' containing value 'active', writes it into db and listens when it is written.
+note: firebase attempts to write it again should the connection fail.
+
 ##### update
 set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
 the same will apply otjer way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
