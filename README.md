@@ -35,29 +35,50 @@ second argument is construct saying it is object (not a list) and defines all th
 
 	var user = BpFactore.create('app.user', bprint);
 
-user is expected to do the following operations
+##### user is expected to do the following operations
 
 set objects' property
 
 	user.name = name;
 
+
 set deep nested onjects' property
 
 	user.info.gender = "male" sets gender
 
+
 write deep nested obbjects' property into DB
 
-	user.info.gender.write(); // write into location
+	user.info.gender.write();
+
 
 rule: the parent location must be already in DB otherwise is thrown error - can't write to non existent location
 
-write whole nested object in DB at once (overwite all inner properies)
 
-	user.info.write() - writes the whole info object in DB (user must be already written)
+write whole nested object in DB at once (overwite all inner properies). Assuming object 'user' is already defined on DB. otherwise the db is very likely throw an error of non existent location.
 
-write the whole object into DB which overwrites all the inner properties or objects
+	user.info.write();
 
-	user.write() writes the whole user into DB with default fields if not initialized.
+
+write the whole object into DB which overwrites all the inner properties or objects. 
+
+	user.write();
+
+
+TODO thik about events once the write / read / update etc operations are finished and new data available in the model.
+example:
+	
+	user.info.write();
+	user.info.writeDone(cb);
+	user.info.writeFail(cb);
+	or
+	user.info.on('write_success', cb);
+	or
+	user.info.on('write', cb_success, cb_error);
+	or
+	user.info.written(function(success){}); // success true / false
+
+
 
 TODO
 the object and nested objects should have flag saying auto update, so all changes on DB can be immediatelly propagated into object
@@ -65,4 +86,3 @@ with this we need to wait with save until the read/update is finished.
 it either should throw and error, wrning or just updates the just read property. TODO - decide
 ...
 
-TODO
