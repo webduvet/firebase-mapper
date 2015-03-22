@@ -40,11 +40,28 @@ ModelFactory assumes the reference refers to root of the database and all other 
 also consider:
 
 	muItem
-		.set('pushed') 	//sets on model
+		.set('pushed') 	//sets on model, if I do only set without setter I can have an atomic item name:value
 		.write(); 			//writes to db
+
+NOTE
+the above example might not be enirely correct `myItem = 'pushed'` does not sets myItems' property but variable myItem to string
+need to thing of soemthing else.
+must have a root object containing either properties or other nested onjects / lists.
 
 creates simple object called 'status' containing value 'active', writes it into db and listens when it is written.
 note: firebase attempts to write it again should the connection fail.
+
+	var myItem = mf.create("keyName", ['value', 'some_value' ]);
+	var myItem = mf.create("keyName", ['list']); // items do not need to be identical, it is just good practice for them to have consistent unique ID
+	var myItem = mf.create("keyName", ['object', {prop1: "", prop2: ""} ]); 
+	var myItem = mf.create("keyName", ['object', otherItem_of_object_type ]); 
+
+NOTE: It can be opinionated and prevent assigning other object to value or list,
+there should be no deeper level then list.
+there should be no list at the same level with other objects or values - list would prevent retrieving the object in one piece.
+
+NOTE: what is the point od `value` item? This does not attempt to copy the db structure, but should create abstraction layer. So value is always part of another object as property!
+
 
 ##### update
 set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
