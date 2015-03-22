@@ -96,6 +96,23 @@ value			read, write, on atomicly
 list			we restrain this to contain only unique ID supplied or generated.
 container	can contain objects type of value, list, container.
 
+#### type container
+can't have a value, does not have a set method. write method does not write the properties directly to DB. Since the proiperties are other containers or values or lists (not recomended)
+it passes the save action to the children.
+
+#### type value
+is basic type which 'talks' to DB. it can contain primitive value or full JS object. should not contain list.
+
+#### type list
+shell for list - should contain some kind of paginator, instantiate with type Value Class or object, so only that typoe of object can be pushed into list.
+auto watch on DB should generate new objects of type value or type container (not list)
+list does not have a savte method. respectivly write method will onluy cause to write on new pushed children, which will be propagated into DB.
+
+#### if parent - child relationship
+parent has path, child need to store parents' path or need to create that path. If parent is not in DB (children are not in yet, so it is not possible to create umpty object) child.save need
+to lookup parent path and create it's own reference.
+This is important as the child does not need to be created during Map creation, but assigned at any point later.
+
 ## example
 ### simple user object
 
