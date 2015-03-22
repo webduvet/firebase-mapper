@@ -63,7 +63,7 @@ there should be no list at the same level with other objects or values - list wo
 NOTE: what is the point od `value` item? This does not attempt to copy the db structure, but should create abstraction layer. So value is always part of another object as property!
 
 
-##### update
+##### update event
 set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
 the same will apply otjer way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
 it will update the value and trigger the event `new_content`
@@ -75,6 +75,26 @@ two flags
 
 if true the object will be synchronyzing with FB
 if the synchrozisation fails for varoius reasons the coresponding event is fired like `lost_connection`
+
+##### object rule
+
+ModelObject can contain ModelItenms, or can contain value // ['value', 'someValue']
+value can be simple value or object however once it is type of value it can't contain other models
+it can be written to DB only as an object, locally can be assigned as usuall.
+
+Model type of value containing object sample:
+
+	myObject:{prop1: true, prop2: {subvalue: TIME, status: "status"}}
+
+operations read, write, on etc. are atomic and concerne the whole object.
+if we want to make prop2 as model, prop one will have to become a model with type of value as well.
+
+so:
+
+typeof 
+value			read, write, on atomicly
+list			we restrain this to contain only unique ID supplied or generated.
+container	can contain objects type of value, list, container.
 
 ## example
 ### simple user object
@@ -97,7 +117,9 @@ second argument is construct saying it is object (not a list) and defines all th
 
 	var user = BpFactore.create('app.user', bprint);
 
-##### user is expected to do the following operations
+
+
+### user is expected to do the following operations
 
 set objects' property
 
