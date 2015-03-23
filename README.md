@@ -96,6 +96,10 @@ value			read, write, on atomicly
 list			we restrain this to contain only unique ID supplied or generated.
 container	can contain objects type of value, list, container.
 
+##### xxxxxxxxxx 
+no type of value allowed anymore. it is either property of Model or nested in literal in which case the model does not allow for any specific events
+but all db events are still possible to use directly on the path.
+
 #### type container
 can't have a value, does not have a set method. write method does not write the properties directly to DB. Since the proiperties are other containers or values or lists (not recomended)
 it passes the save action to the children.
@@ -107,6 +111,46 @@ is basic type which 'talks' to DB. it can contain primitive value or full JS obj
 shell for list - should contain some kind of paginator, instantiate with type Value Class or object, so only that typoe of object can be pushed into list.
 auto watch on DB should generate new objects of type value or type container (not list)
 list does not have a savte method. respectivly write method will onluy cause to write on new pushed children, which will be propagated into DB.
+
+### Ammended types - scrap the above
+#### type model
+This type contains properties. Property can be either primitive or obejct literal. can be watched, as local and remote. This is part of the propery definition.
+Property can as well contain a reference to another model or list. 
+If there is a reference, it needs to be somehow marked. - can have a psude value similar to RESTful geeting only object keys. 
+We have a two types of references.
+plain reference which in the form 
+
+	SOME_UNIQUE_ID: true
+
+or complex reference which can look likw this
+
+	SOME_UNIQUE_ID:
+	{
+		prop1: "something",
+		prop2: "something else",
+		prop3:
+		{
+			sub1: "more else",
+			sub2: "more more else"
+		}
+	}
+
+where the reference is very often stored using some priority (TODO priorities) 
+in this object it could contain some user specific data relatve to some other object or it can be just extract of more complez object which is refered by UNIQUE ID
+Right now I can't think of any usecase where the reference key is not unique identifier created by increment or push ID
+
+#### type list
+should be created with class of which object list should contain. list needs to have a method pushNew where creates new record. it should contain a aginator
+or endless scrolling feature.
+should take care of priorities.
+should allow for changing prioritties within the list.
+should listen for all relevant events:
+	
+	child_added
+	child_moved
+	chiled_removed
+
+as well as limitLast and LimitFirst esoecially in relation to pnaginator.
 
 #### if parent - child relationship
 parent has path, child need to store parents' path or need to create that path. If parent is not in DB (children are not in yet, so it is not possible to create umpty object) child.save need
