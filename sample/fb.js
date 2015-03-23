@@ -138,8 +138,8 @@ child_changed returns as well the whole object from listened location if the pri
 
 however - when using Firebase ServerValue.TIMESTAMP as priority
 the process is as follows
-prioroty is replaced with placeholder, and the callback is immediatelly fired (where is the priority from I have no idea)
-right after the Server replace the placeholder with timestamp the event is triggered again showing the correct timestamp
+prioroty is replaced with placeholder, and the callback is immediatelly fired (where is the priority from I have no idea) as the write op is very fast (about 4ms)
+right after the Server replace the placeholder with timestamp (350ms) the event is triggered again showing the correct timestamp
 
 
 */
