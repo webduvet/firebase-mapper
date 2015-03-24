@@ -28,4 +28,12 @@ setTimeout(function(){
 	console.log(JSON.stringify(x));
 }, 4000)
 
+x.__watch_remote("prop1", "child_changed");
+
+setTimeout(function(){ 
+	x.prop1="tadada"; 
+	console.log("assigned x.prop1", x);
+	console.log(JSON.stringify(x));
+}, 10000)
+
 console.log(x);
