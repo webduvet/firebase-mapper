@@ -27,8 +27,8 @@ ref.child('test')
 
 */
 ref.child('test/first/second/third/fourth/fifth')
-.on('child_moved', function(ss){
-	console.timeEnd('sv');
+.on('value', function(ss){
+	//console.timeEnd('sv');
 	console.log("listener for fifth: ", ss.exportVal());
 });
 

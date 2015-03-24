@@ -22,23 +22,21 @@ if (!MyClass.prototype.watch) {
 		, configurable: true
 		, writable: false
 		, value: function (prop, handler) {
-			var
-			  val_ = this[prop]
-			, newval_ = val_
-			, getter = function () {
-				return val_;
-			}
-			, setter = function (val) {
-				handler.call(this, prop, val_, val);
-				val_ = val;
-				return val_;
-			}
-			;
+			var shadowProp = 'zz_'+prop;
+			Object.defineProperty( MyClass.prototype, shadowProp, {
+					enumerable: false
+				, configurable: true
+				, writable: true
+				, value: this[prop]
+				})
 			
 			if (delete this[prop]) { // can't watch constants
 				Object.defineProperty(this, prop, {
-					  get: getter
-					, set: setter
+					  get: function(){return this[shadowProp]; }
+					, set: function(val){
+						handler.call(this, prop, this[shadowProp], val);
+						this[shadowProp] = val;
+					}
 					, enumerable: true
 					, configurable: true
 				});
@@ -65,17 +63,12 @@ if (!MyClass.prototype.unwatch) {
 var obj = new MyClass();
 
 obj.test = 10;
-obj.other = 11;
-
 console.log("init to ", obj.test);
 obj.watch('test', function(prop, val, newval){console.log("test has changed", prop, val, newval)});
-obj.watch('other', function(prop, val, newval){console.log("other has changed", prop, val, newval)});
 
 obj.test = 20;
 
 obj.test = 30;
-
-obj.other = 22;
 
 obj.test = 40;
 
@@ -84,6 +77,7 @@ obj.test = 40;
 
 setTimeout(function(){console.log(obj.test);}, 1000);
 
+
 var l = 0;
 obj.watch('test', function(prop, val, newval){l++});
 
@@ -91,6 +85,6 @@ obj.watch('test', function(prop, val, newval){l++});
 
 console.time('test');
 for(var i = 0; i < 1000000; i++){
-	obj.test = i;
+  obj.test = i;
 };
 console.timeEnd('test');

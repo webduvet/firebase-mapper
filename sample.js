@@ -10,5 +10,22 @@ var blueprint = {
 
 var x = new Zz.Model(ref.child('test'), 'test/me', blueprint);
 
+x.write();
+x.on('written', function(){
+	console.log("data written");
+});
+
+x.__wlocal('prop1');
+
+setTimeout(function(){ 
+	x.prop1= Math.random(); 
+	console.log("assigned x.prop1", x.prop1);
+}, 2000)
+
+setTimeout(function(){ 
+	x.prop1="tadada"; 
+	console.log("assigned x.prop1", x);
+	console.log(JSON.stringify(x));
+}, 4000)
 
 console.log(x);
