@@ -15,7 +15,7 @@ x.on('written', function(){
 	console.log("data written");
 });
 
-x.__wlocal('prop1');
+x.watchLocal('prop1');
 
 setTimeout(function(){ 
 	x.prop1= Math.random(); 
@@ -28,11 +28,12 @@ setTimeout(function(){
 	console.log(JSON.stringify(x));
 }, 4000)
 
-x.__watch_remote("prop1", "child_changed");
+x.watchRemote("prop1", "child_changed");
 
 setTimeout(function(){ 
-	x.prop1="tadada"; 
-	console.log("assigned x.prop1", x);
+	x.prop1="late change see if it gets in"; 
+	x.prop1 = null;
+	console.log("assigned x", x);
 	console.log(JSON.stringify(x));
 }, 10000)
 
