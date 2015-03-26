@@ -24,7 +24,6 @@ if (!MyClass.prototype.watch) {
 		, value: function (prop, handler) {
 			var
 			  val_ = this[prop]
-			, newval_ = val_
 			, getter = function () {
 				return val_;
 			}
