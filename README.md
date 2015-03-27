@@ -140,7 +140,7 @@ in this object it could contain some user specific data relatve to some other ob
 Right now I can't think of any usecase where the reference key is not unique identifier created by increment or push ID
 
 #### type list
-should be created with class of which object list should contain. list needs to have a method pushNew where creates new record. it should contain a aginator
+should be created with class of which object list should contain. list needs to have a method pushNew where creates new record. it should contain a paginator
 or endless scrolling feature.
 should take care of priorities.
 should allow for changing prioritties within the list.
@@ -150,7 +150,34 @@ should listen for all relevant events:
 	child_moved
 	chiled_removed
 
-as well as limitLast and LimitFirst esoecially in relation to pnaginator.
+as well as limitLast and LimitFirst esoecially in relation to paginator.
+
+There kshould be no option/need to modify items in the list from the List directly. e.g. give me list record XZY and I add XZY.name. Big no no.
+List Items, if they are full objects can be modified via Model
+if they are rich references, those are modified via application logic. let say, xzy.pagevisits++.
+if they are plain references - those can't be modified. only removed.
+List does not have any methods to modify the items inside - only via Models or directly from App logic.
+Lists are primarily used as list of references for display / search purposes.
+
+##### @contructor List
+creates the instance of List with firebase instance refering to list location, url and blueprint for new objects
+pushed by this list. List can as well create new key (by push) and the object for the key can be provided manually.
+
+TODO
+is List only abstraction of DB list
+or does it serve as well as paginator or endless scroll?
+
+##### List.push([Zz.Model])
+creates new key in the list, 
+if no arguments provided it create as well a brand new object from blueprint and it is ready to be saved to DB with default values.
+If instance of a Model is provided it will be assigned the generated ID and can be saved into list.
+
+##### List.page
+Paginator object, containing the [size] lodaed records 
+
+	.set(size, first)
+	.next();
+	.previous();
 
 #### if parent - child relationship
 parent has path, child need to store parents' path or need to create that path. If parent is not in DB (children are not in yet, so it is not possible to create umpty object) child.save need
