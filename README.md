@@ -184,6 +184,19 @@ parent has path, child need to store parents' path or need to create that path. 
 to lookup parent path and create it's own reference.
 This is important as the child does not need to be created during Map creation, but assigned at any point later.
 
+#### ModelFactory.addAction
+Actions simpulates the relationship to other models
+e.g. 
+UserA has friends UseB to F 
+When user A posts a message in chat program, the message or the reference to that message should be pushed to UserB to F specific location
+for example messages/{UserX}/userA/message.json
+this action is desired to have automated and the client does not need to wait for the result either positive or negative or mixed.
+
+it is a factory method which decorates Models' write method to accomodate the action requirements
+
+1.) addActionMethod
+2.) decorates write method
+
 ## example
 ### simple user object
 
