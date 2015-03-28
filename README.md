@@ -76,41 +76,18 @@ two flags
 if true the object will be synchronyzing with FB
 if the synchrozisation fails for varoius reasons the coresponding event is fired like `lost_connection`
 
-##### object rule
+### Object Blueprint
+is object literal which serves as blueprint for ModelFactory to create new instances of a model
 
-ModelObject can contain ModelItenms, or can contain value // ['value', 'someValue']
-value can be simple value or object however once it is type of value it can't contain other models
-it can be written to DB only as an object, locally can be assigned as usuall.
-
-Model type of value containing object sample:
-
-	myObject:{prop1: true, prop2: {subvalue: TIME, status: "status"}}
-
-operations read, write, on etc. are atomic and concerne the whole object.
-if we want to make prop2 as model, prop one will have to become a model with type of value as well.
-
-so:
-
-typeof 
-value			read, write, on atomicly
-list			we restrain this to contain only unique ID supplied or generated.
-container	can contain objects type of value, list, container.
-
-##### xxxxxxxxxx 
-no type of value allowed anymore. it is either property of Model or nested in literal in which case the model does not allow for any specific events
-but all db events are still possible to use directly on the path.
-
-#### type container
-can't have a value, does not have a set method. write method does not write the properties directly to DB. Since the proiperties are other containers or values or lists (not recomended)
-it passes the save action to the children.
-
-#### type value
-is basic type which 'talks' to DB. it can contain primitive value or full JS object. should not contain list.
-
-#### type list
-shell for list - should contain some kind of paginator, instantiate with type Value Class or object, so only that typoe of object can be pushed into list.
-auto watch on DB should generate new objects of type value or type container (not list)
-list does not have a savte method. respectivly write method will onluy cause to write on new pushed children, which will be propagated into DB.
+#### Model - Blueprint relationship
+Blueprint represents the properties of the model. 
+it contains all properties set to null, so the model created does not change the shape once the properties are initialized.
+Blueprint contains information if nested element is `primitive` or `object literal` or `instance of a model` or `instance of a list`.
+Nested models or lists will cause instantiation of apropriate factory which will use the nested object as its' blueprint.
+The instance of factory of nested onject will reside within parent ModelFactory instance.
+Once the Model is created the child instance will create it's own part which is assigned to coresponding property.
+#####TODO
+samples here
 
 ### Ammended types - scrap the above
 #### type model
@@ -138,6 +115,13 @@ or complex reference which can look likw this
 where the reference is very often stored using some priority (TODO priorities) 
 in this object it could contain some user specific data relatve to some other object or it can be just extract of more complez object which is refered by UNIQUE ID
 Right now I can't think of any usecase where the reference key is not unique identifier created by increment or push ID
+
+##### Factory
+Model is created by factory instance. ModelFactory is a class of which constructor takes blueprint, url, and firebase reference as parameter.
+instance of ModelFactory will produce the models of the same blueprint. Each factory instance contains a decorating methods so 
+the cratoin of the model can be decorated with extra methods if needed - that however does not affect already created models.
+The methods like `write` can be decarated as well to accomodate some specific behaviour of some models (saving procedure affecting other parts of DB)
+
 
 #### type list
 should be created with class of which object list should contain. list needs to have a method pushNew where creates new record. it should contain a paginator
