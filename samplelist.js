@@ -29,7 +29,10 @@ var list = new Zz.List ({
 
 var mm = list.push();
 
-mm.write();
+mm.watchLocal('prop1');
+mm.prop1 = "test";
+
+//mm.write();
 
 
 var listBp = {
