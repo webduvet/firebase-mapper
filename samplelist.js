@@ -4,7 +4,7 @@ var Zz = require('./lib/mapper.js');
 var modelBp = {
 	prop1: null,
 	prop2: null,
-	prop3: 0
+	prop3: null
 };
 
 // stand alone object with own url

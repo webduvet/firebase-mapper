@@ -63,6 +63,18 @@ there should be no list at the same level with other objects or values - list wo
 NOTE: what is the point od `value` item? This does not attempt to copy the db structure, but should create abstraction layer. So value is always part of another object as property!
 
 
+##### Load from DB
+Model factory can load model from DB location
+
+###### Challenge 1 - identify object
+how do we know that the object in DB has the same structure? It is not guaranteed - all we have is a factory and blueprint so we know what we expect
+Do we just fill the properties one by one?
+Do we set the ref on new object from factory and that will trigger interal update? - Prefered option
+
+###### Challenge 2 - nested object
+If the blueprint identifies nested objects we need to instantiate factory for those and load data from DB
+
+
 ##### update event
 set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
 the same will apply otjer way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
