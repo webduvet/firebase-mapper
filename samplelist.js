@@ -4,7 +4,7 @@ var Zz = require('./lib/mapper.js');
 var modelBp = {
 	prop1: null,
 	prop2: null,
-	prop3: null
+	prop3: "default"
 };
 
 // stand alone object with own url
@@ -27,7 +27,11 @@ var list = new Zz.List ({
 	keyType: "auto"
 });
 
-var mm = list.push();
+// if not set to true it will return DB representation of the object
+// but it will be not yet pushed to DB
+// however watching locals will manifest those into DB
+// user need to either set param to true or use .write() explicitly
+var mm = list.push(true);
 
 mm.watchLocal('prop1');
 mm.prop1 = "test";
