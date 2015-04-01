@@ -45,3 +45,9 @@ var listBp = {
     keyType: "auto"
 };
 
+
+var n = list.get('-Jlked63nuiSy2ArCwrA');
+
+n.on('loaded', function(){
+	console.log("loaded: ", n);
+});
