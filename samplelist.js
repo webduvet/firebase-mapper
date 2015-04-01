@@ -1,5 +1,5 @@
 var Firebase = require('firebase');
-var Zz = require('./lib/mapper.js');
+var Zz = require('./lib/zz.js');
 
 var modelBp = {
 	prop1: null,

@@ -1,0 +1,26 @@
+{
+  "name": "firebase-mapper",
+  "version": "0.0.1",
+  "description": "Model representation of Firebase object",
+  "main": "accessor.js",
+  "dependencies": {
+    "firebase": "^2.2.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "testf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/webduvet/firebase-mapper.git"
+  },
+  "keywords": [
+    "firebase"
+  ],
+  "author": "andrej bartko",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/webduvet/firebase-mapper/issues"
+  },
+  "homepage": "https://github.com/webduvet/firebase-mapper"
+}
