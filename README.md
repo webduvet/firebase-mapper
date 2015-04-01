@@ -66,6 +66,25 @@ NOTE: what is the point od `value` item? This does not attempt to copy the db st
 ##### Load from DB
 Model factory can load model from DB location
 
+from list
+
+	var n = list.get(id);
+	n.load();
+
+from object coresponding to models' blueprint
+
+	var n = modelFactory.create(ref);
+	n.loadFromObject(object); // TODO - us .load() -if a param is used then do not use DB but provided object
+
+
+in both cases the event "loaded" is dispatched
+
+n.on('loaded', function(){
+	// TODO are we passing anything here?
+	});
+
+
+
 ###### Challenge 1 - identify object
 how do we know that the object in DB has the same structure? It is not guaranteed - all we have is a factory and blueprint so we know what we expect
 Do we just fill the properties one by one?

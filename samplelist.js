@@ -51,3 +51,5 @@ var n = list.get('-Jlked63nuiSy2ArCwrA');
 n.on('loaded', function(){
 	console.log("loaded: ", n);
 });
+
+console.log("not loaded yet", n);
