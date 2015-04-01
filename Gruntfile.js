@@ -1,12 +1,21 @@
 module.exports = function(grunt) {
-	// Project configuration.
 	grunt.initConfig({
-		concat: {
-			// concat tasks
+		pkg: grunt.file.readJSON('package.json'),
+		concat:
+		{
+		},
+		jshint:
+		{
+			options:{
+				laxcomma: true
+			},
+			src:['lib/zz.js', 'lib/model.js']
 		}
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['uglify']);
+	grunt.registerTask('default', ['jshint']);
+
+	grunt.loadNpmTasks('grunt-contrib-jshint');
 
 };

@@ -6,7 +6,10 @@
   "dependencies": {
     "firebase": "^2.2.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-jshint": "^0.11.1"
+  },
   "scripts": {
     "test": "testf.js"
   },
