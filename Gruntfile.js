@@ -37,17 +37,23 @@ module.exports = function(grunt) {
 		{
 			files: ['lib/*.js'],
 			tasks: ['jshint']
+		},
+		nodeunit:
+		{
+			files: ['test/*.js']
 		}
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint', 'concat']);
+	grunt.registerTask('default', ['jshint', 'concat', 'nodeunit']);
 	grunt.registerTask('prod', ['jshint', 'concat', 'uglify']);
 	grunt.registerTask('watch', ['watch']);
+	grunt.registerTask('test', ['nodeunit']);
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.loadNpmTasks('grunt-contrib-nodeunit');
 
 };
