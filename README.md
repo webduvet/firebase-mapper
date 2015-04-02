@@ -22,21 +22,36 @@ the objects shape which does have a proeformance toll.
 The Model representation is created from blueprint with all the optional and possible fields, thus the objects shape will never change and can be optimizes (see shaddow class...)
 
 
-## Soluction
-Fb blue print and model tool is here to help in this battle.  The project aims to create factory method which creates firebase friendly data mapper, where in blue print we
-define the structure and relations and let the model figure out all the denormalized data.
+## Solution
+Fb blue print and model tool is here to help in this battle.  The project aims to create factory method which creates firebase friendly model representation on firebase data.
+In the blueprint we define the structure and relations and let the model figure out all the denormalized data.
 
 ## Thoughts
+
+### Refrences
 list can contain two type of object
-#####primary
+#### Primary
 object have unique indetifier and are primary object, this means if the key appears somewhere else in the tree it is refering to this object
-#####reference
+#### Reference
 this is object refering to primary object. 
 reference can be as simple as {KEY:true} creating a simple list of references (perhaps stored by timestamp priority)
 but it can contain denormalized parts from primary object, or other informative objects like counters.
 Reference object can't be refered again by another reference.
 
-#####Init part
+###### Plain reference
+this plainly refers to primary object in the form {KEY}:true
+
+###### Rich reference
+this contains additional information in the reference object, usually unique related to specific record
+
+	{KEY}: {
+		info1: "info1",
+		info2: "info2"
+	}, ...
+
+TODO do we extend Model to cater for reference ???
+
+### Init part
 ModelFactory needs to be instantiated with valid db reference like
 
 	var mf = new ModelFactory( new Firebase('url') );
@@ -75,7 +90,7 @@ there should be no list at the same level with other objects or values - list wo
 NOTE: what is the point od `value` item? This does not attempt to copy the db structure, but should create abstraction layer. So value is always part of another object as property!
 
 
-##### Load from DB
+### Load from DB
 Model factory can load model from DB location
 
 from list
@@ -106,7 +121,7 @@ Do we set the ref on new object from factory and that will trigger interal updat
 If the blueprint identifies nested objects we need to instantiate factory for those and load data from DB
 
 
-##### update event
+### update event
 set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
 the same will apply otjer way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
 it will update the value and trigger the event `new_content`
