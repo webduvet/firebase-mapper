@@ -1,5 +1,5 @@
 var Firebase = require('firebase');
-var Zz = require('./lib/mapper.js');
+var Zz = require('./build/firebase-mapper.js');
 var ref = new Firebase('https://sagavera.firebaseio.com');
 var blueprintNested = {
 	nestedA: "top nested",
@@ -11,7 +11,7 @@ var blueprintNested = {
 // TODO we need
 // once the assigning to a parent is taiking place, we need parent reference to take place of the current ref
 // with the path(key) name
-var xNested = new Zz.Model(ref.child('test/test/me'), 'prop5', blueprintNested );
+var xNested = new Zz.Model(ref.child('test/me'), blueprintNested );
 
 var blueprint = {
   prop1: null,
