@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 			options:{
 				laxcomma: true
 			},
-			src:['lib/zz.js', 'lib/model.js']
+			src:['lib/*.js']
 		}
 	});
 
