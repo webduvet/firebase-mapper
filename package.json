@@ -2,7 +2,7 @@
   "name": "firebase-mapper",
   "version": "0.0.1",
   "description": "Model representation of Firebase object",
-  "main": "accessor.js",
+  "main": "samplelist.js",
   "dependencies": {
     "firebase": "^2.2.3"
   },

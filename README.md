@@ -10,6 +10,18 @@ or nested promises couple of levels.
 Storing data in document storage requires certain level of denormalization. Developer very quickly wandrs away from all nice tools relational database
 offers and swimms in deep water of denormalized data.
 
+Rigid Model representation.
+The document based databases have a great advantage that the documents does not need to folow the rigid structure. Not required fields are just not present.
+Firebase behaves in the very same way
+
+	ref.set({prop1: null, prop2, "sample"});
+
+wil propagate only prop2 into DB and ubsequently when retrieveing from db the object does not contain this property and it needs to be added. This obviusly changes the
+the objects shape which does have a proeformance toll.
+
+The Model representation is created from blueprint with all the optional and possible fields, thus the objects shape will never change and can be optimizes (see shaddow class...)
+
+
 ## Soluction
 Fb blue print and model tool is here to help in this battle.  The project aims to create factory method which creates firebase friendly data mapper, where in blue print we
 define the structure and relations and let the model figure out all the denormalized data.
