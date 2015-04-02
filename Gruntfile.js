@@ -32,15 +32,22 @@ module.exports = function(grunt) {
 				laxcomma: true
 			},
 			src:['lib/*.js']
+		},
+		watch:
+		{
+			files: ['lib/*.js'],
+			tasks: ['jshint']
 		}
 	});
 
 	// Default task(s).
 	grunt.registerTask('default', ['jshint', 'concat']);
 	grunt.registerTask('prod', ['jshint', 'concat', 'uglify']);
+	grunt.registerTask('watch', ['watch']);
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
+	grunt.loadNpmTasks('grunt-contrib-watch');
 
 };
