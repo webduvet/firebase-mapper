@@ -3,6 +3,15 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		concat:
 		{
+			options:
+			{
+				separarator: ';'
+			},
+			dist:
+			{
+				src:['lib/zz.js', 'lib/model*.js', 'lib/list*.js', 'lib/exception*.js', 'lib/provider*.js'],
+				dest:"dist/<%= pkg.name %>.js"
+			}
 		},
 		jshint:
 		{
@@ -14,8 +23,10 @@ module.exports = function(grunt) {
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint']);
+	grunt.registerTask('default', ['jshint', 'concat']);
+	grunt.registerTask('concat', ['concat']);
 
 	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-contrib-concat');
 
 };

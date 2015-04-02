@@ -1,3 +1,9 @@
+/**
+ * defining Zz model space
+ */
+var Zz = module.exports = {};
+
+
 
 /**
  * Creates a new model
@@ -573,3 +579,273 @@ Object.defineProperty(Zz.Model.prototype, 'setProp', {
 		}
 	}
 });
+
+/**
+ * Model Factory contructor
+ * @constructor
+ * @access public
+ *
+ * @param {Firebase} instance of Firebase reference
+ */
+Zz.ModelFactory = function(ref, blueprint){
+	this.ref = ref;
+	this.blueprint = blueprint;
+};
+
+/**
+ * decorates each instance of the Model class created by this factory in the future
+ * does not change existing instnces created by this factory
+ * @decorator
+ * @access public
+ *
+ * @param {string} new action name
+ * @param {Function} action handler
+ */
+Zz.ModelFactory.prototype.decorateCreate = function(name, fn){
+	var oldCreate = this.create;
+    this.create = function(){
+        var model = oldCreate.apply(this, arguments);
+        model[name] = fn;
+        return model;
+    };
+};
+
+Zz.ModelFactory.prototype.decorateModelsMethod = function(name, fn){
+};
+
+/**
+ * removes all previous decorators on create method
+ */
+Zz.ModelFactory.prototype.unDecorateCreate = function(){
+	this.create = Zz.ModelFactory.prototype.create;
+};
+
+/**
+ * decorates given action with given decorator
+ * @decorator
+ * @access public
+ *
+ * @param {string} method descriptor
+ * @param {Function} Decoreator function @returns decorated action
+ */
+Zz.ModelFactory.prototype.decorateAction = function(method, decorator){
+};
+
+/**
+ * factory method to construct the Model
+ * @constructs [Model]
+ *
+ * @param {Firebase} Database reference to particular location // TODO or combine this with root.child(url) 
+ * @return {Model} created Model instance
+ */
+Zz.ModelFactory.prototype.create = function(ref){
+	// need instance of Firebase...
+	if (typeof ref.key !== 'function') throw "Ref needs to be Firebase reference";
+	return new Zz.Model(ref, this.blueprint);
+};
+
+/**
+ * creates instance of Zz.List  model
+ * @constructor
+ *
+ * @param {Firebase} reference Firebase DB root or parent object
+ * @param {string} Path to the FB object which List represents
+ * @param {Object} blueprint to create ZzModel Factory
+ *
+ * TODO is this DB rather abstract implementation
+ * or should it be considered as a conrete part of a list
+ * in that case it should be paginator there.
+ */
+Zz.List = function(config) {
+	// TODO create Zz.Model plain instance on push
+	// as well the parent - child relarionship must be created via ref
+	this._events = {
+		"child_added": [],
+		"child_removed":[],
+		"priority_changed":[]
+	};
+	this.ref = config.ref;
+	this.factory = config.factory;
+
+	// set priority listener by default
+	this.ref.on('child_moved', function(){
+		this._trigger('child_moved');
+	});
+
+	/**
+	 * non enumerable property page
+	 * this can contain paginator and be the view interface...
+	 */
+	Object.defineProperty(this, "_page", {
+		enumerable: false,
+		configurable: true,
+		writable: true,
+		value:{}
+	});
+};
+
+/**
+ * creates new record in list using provided model factory
+ * 
+ * @param {Boolean} [true] write to DB defaults to false. Object is instantiated, but not written to DB.
+ *
+ * @returns {Zz.Model} model representaiton of DB record
+ */
+Zz.List.prototype.push = function(){
+	var write = arguments[0] || false,
+		record = this.ref.push(), 
+		obj = this.factory.create(record);
+
+	// TODO
+	// do we write it to db from here?
+	// do we use objects' method? - cleanor solution
+	// or we can return unwrittent object and user will programatically write
+	// the object to DB
+	// or we introduce settings
+	/*
+	record.set( obj , function(err){
+		if(!err) this._trigger("child_added");
+	}.bind(this));
+	*/
+	if(write) obj.write();
+
+	return obj;
+};
+
+/**
+ * get the object from DB location and instantiate the model representation
+ *
+ * @emits ["loaded", "error"] 
+ *
+ * @params {string} key descriptor
+ *
+ * @returns {Zz.Model} Model representation of DB location created from Bluepront stored in modelFactory
+ * TODO
+ * provide for lists
+ * in list case we should get another lista nd that one most likely will contain objects;
+ *
+ * TODO
+ * this use case is making primary list
+ * how do we do list of references?
+ * plain references - should load directly associated object
+ * rich references should be treated as objects as they cary some value, but shoud perhaps have
+ * a hidden field __parent or __reference
+ */
+Zz.List.prototype.get = function(key){
+	// get the location from database
+	
+	// create new model from blueprint TODO look if string key is subnstituted with firebase
+	var m = this.factory.create( this.ref.child(key) );
+
+	// emit event "ready" or "loaded"
+	
+	m.load();
+
+	return m;
+};
+
+Zz.List.prototype._trigger = function(event){
+	// if no handler is subsrcibed to event just return
+	if(!(event in this._events)) return;
+	this._events[event].forEach(function(handler){ handler(); });
+};
+
+/**
+ * changes / sets priority on record described by key
+ *
+ * @param {string} key descriptior
+ * @param {string || number || ServerValue} 
+ */
+Zz.List.prototype.setPriority = function(key, priority) {
+	this.ref.child(key).setPriority(priority);
+};
+
+
+/**
+ * loads full page
+ * TODO
+ */
+Zz.List.prototype.loadPage = function(){
+};
+
+/**
+ * Factory for Zz.List
+ * @contructor
+ *
+ * @param {Firebase} takes instance of firebase reference containing location
+ * @param {Object} blueprint for the list
+ *   modelFactory - innstance of the model factory
+ *   type = [ rich_ref, plain_ref, object ]
+ *   priority - {priorityProvider{ instance
+ */
+Zz.ListFactory = function(ref, blueprint) {
+	this.ref = ref;
+	if (Object.isArray(blueprint) && 
+			blueprint[0] === 'list' && 
+			typeof blueprint[1] === 'object' && 
+			!Object.isArray(blueprint[1])) {
+		this.blueprint = blueprint[1];
+	} else if (typeof blueprint[1] === 'object' && !Object.isArray(blueprint[1])) {
+		this.blueprint = blueprint;
+	} else {
+		throw "Invalid parameters in blueprint";
+	}
+	if (this.blueprint.modelFactory instanceof Zz.ModelFactory) throw "Invalid argument in ModelFactory";
+	if (this.blueprint.priorityProvider instanceof Zz.PriorityProvider ) throw "Invalid argument in PriorityProvider";
+
+	this.modelFactory = this.blueprint.modelFactory;
+	this.priorityProvider = this.blueprint.priorityProvider;
+};
+
+/**
+ * TODO
+ * the only need for list factory is the case where
+ * the data is stored under customID
+ * e.g
+ * comments/{user_id}/{AUTO_ID}/comment_data.json
+ * however in this case we never need to load "a page" of comments/{user_ID}
+ * in DB technically it is list of lists, but in reality we always have a direct link to inner list.
+ *
+ * TODO - can you think of different use case.
+ * blog/{USERID}/{topic_ID}/{BLOG_AUTOID}/blog_content.json
+ * not sure if this is the right way how I would do DB as it is impossible list thorugh blogs
+ * outside topics.
+ *
+ * TODO - we can list of lists leave outside of this for the time
+ */
+
+/**
+ * creates the Zz.List instance
+ * 
+ * @param {string} url relative to provided ref in factory
+ * @param {object} blueprint for new objects which list should contain
+ *
+ * @returns {Zz.List} new instance
+ */
+Zz.ListFactory.prototype.create = function(){
+	return;
+};
+
+Zz.Exception = function(msg){
+	this.message = msg;
+};
+Zz.Exception.prototype = Object.create(Error.prototype);
+Zz.Exception.prototype.constructor = Zz.Exception;
+
+/**
+ * service returning the required priority for the key
+ * can return ServerValue if needed;
+ *
+ * by default returns linux timestamp
+ * TODO properly initialize with config block
+ * so we can inject any type of service in it
+ */
+Zz.PriorityProvider = function(config){
+	if (config && config.service) this.service = config.service;
+	if (config && config.method) this.method = config.method;
+};
+
+Zz.PriorityProvider.priority = function(){
+	return Date.now();
+};
+
