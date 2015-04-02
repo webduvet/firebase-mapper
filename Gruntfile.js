@@ -7,15 +7,10 @@ module.exports = function(grunt) {
 			{
 				separarator: ';'
 			},
-			dist:
-			{
-				src:['lib/zz.js', 'lib/model*.js', 'lib/list*.js', 'lib/exception*.js', 'lib/provider*.js'],
-				dest:"dist/<%= pkg.name %>.js"
-			},
 			build:
 			{
 				src:['lib/zz.js', 'lib/model*.js', 'lib/list*.js', 'lib/exception*.js', 'lib/provider*.js'],
-				dest:"dist/<%= pkg.name %>.js"
+				dest:"build/<%= pkg.name %>.js"
 			}
 		},
 		uglify:
