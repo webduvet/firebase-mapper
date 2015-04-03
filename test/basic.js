@@ -17,6 +17,13 @@ module.exports = {
 			test.equals(typeof Fm.List, 'function', 'expect typeof function and got', typeof Fm.List);
 			test.equals(typeof Fm.ListFactory, 'function', 'expect typeof function and got', typeof Fm.ListFactory);
 			test.done();
+		},
+		'test exceptions': function(test) {
+			test.expect(3);
+			test.throws( function(){ new Fm.List();});
+			test.throws( function(){ new Fm.Model();});
+			test.throws( function(){ new Fm.Model({},{});});
+			test.done();
 		}
 	}
 };

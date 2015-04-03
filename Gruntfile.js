@@ -41,11 +41,25 @@ module.exports = function(grunt) {
 		nodeunit:
 		{
 			files: ['test/*.js']
+		},
+		yuidoc:
+		{
+			compile:{
+				name: 'build/<%= pkg.name %>.js',
+				//description: '<%= pkg.description %>',
+				//version: '<%= pkg.version %>',
+				//url: '<%= pkg.homepage %>',
+				options: {
+					paths: 'build/',
+					//themedir: 'path/to/custom/theme/',
+					outdir: 'docs/'
+				}
+			}
 		}
 	});
 
 	// Default task(s).
-	grunt.registerTask('default', ['jshint', 'concat', 'nodeunit']);
+	grunt.registerTask('default', ['jshint', 'concat', 'nodeunit', 'yuidoc']);
 	grunt.registerTask('prod', ['jshint', 'concat', 'uglify']);
 	grunt.registerTask('watch', ['watch']);
 	grunt.registerTask('test', ['nodeunit']);
@@ -55,5 +69,6 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-contrib-nodeunit');
+	grunt.loadNpmTasks('grunt-contrib-yuidoc');
 
 };

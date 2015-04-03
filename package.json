@@ -12,7 +12,8 @@
     "grunt-contrib-jshint": "^0.11.1",
     "grunt-contrib-nodeunit": "^0.4.1",
     "grunt-contrib-uglify": "^0.8.1",
-    "grunt-contrib-watch": "^0.6.1"
+    "grunt-contrib-watch": "^0.6.1",
+    "grunt-contrib-yuidoc": "^0.7.0"
   },
   "scripts": {
     "test": "testf.js"
