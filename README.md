@@ -174,6 +174,26 @@ where the reference is very often stored using some priority (TODO priorities)
 in this object it could contain some user specific data relatve to some other object or it can be just extract of more complez object which is refered by UNIQUE ID
 Right now I can't think of any usecase where the reference key is not unique identifier created by increment or push ID
 
+##### changes, ideas
+Each property which contains non primitive (object) as arrays are not recomended (not permitted in mapper) should perhaps instantiate a model. problem is with the factory.
+but if each level would be an object this would solve the issue where we can't listen for a change within the object if the value of the property is not ptimitive
+
+	mainObj:
+	{
+		prop: {
+			objprop: "something"
+		}
+	}
+
+in this axample if mainObj.prop.objprop is changed from "something" to "something else" the prop itsels is not changed as it contains the reference to object of which property has changed.
+If we have by default each level as new Model we could set listener for change like this
+
+	mainObj.watchLocal('prop.objprop');
+
+because if we set only mainObj.watchLocal('prop') the change inside of prop object will be not picked by observer.
+
+This problem does not apply for watchRemote it can pick any change inside the object tree in Firebase.
+
 ##### Factory
 Model is created by factory instance. ModelFactory is a class of which constructor takes blueprint, url, and firebase reference as parameter.
 instance of ModelFactory will produce the models of the same blueprint. Each factory instance contains a decorating methods so 
