@@ -25,8 +25,8 @@ var Model = function(ref, bp){
 		(function(key){
 			var _value = bp[key];
 			// TODO get rid of this it's useless
-			if ( typeof bp[key] === 'object' && false ) {
-				console.log("todo object");
+			if ( Array.isArray( bp[key] ) ) {
+				setList(bp[key]);
 			} else {
 				Object.defineProperty(this, key, {
 					enumerable: true,
@@ -62,6 +62,16 @@ var Model = function(ref, bp){
 		writable: true,
 		value: []
 	});
+
+	function setList(prop, bp) {
+		// TODO setup list
+		// check if already a list
+		if ( bp instanceof Fm.List ) {
+			this[prop] = bp;
+		} else {
+			this[prop] = new Fm.List(bp);
+		}
+	}
 };
 
 
@@ -94,13 +104,9 @@ var sample = {
 var m = new Model(ref.child('getset'), sample);
 
 
-console.log(m);
-console.log(m.prop1, m.prop3);
-
 
 m.prop1 = "hey";
 m.prop3 = { deep: "inside"};
-console.log(m, m.prop1);
 
 m.prop4.very_deep.sub2 = "XYZ";
 
