@@ -63,18 +63,39 @@ module.exports = {
 		},
 		'simple': function (test) {
 			test.expect(2);
-			var model = new Fm.Model(this.ref, testBP.simple);
+			var model = new Fm.Model(this.ref.child('simple'), testBP.simple);
 			// TODO if not write then watchLocal does not trigger written..
 			// model.write();
 			test.equals(model.prop1, "prop1", "Expect prop1 and got " + model.prop1);
-			model.on('written', function(){
+			// TODO model.write and watchLocal need to trigger different event. !!!
+			// TODO watchLocal can trigger two events - sentToRemote (sent) and deliveredToRemote(delivered)
+			model.on('delivered', function(){
 				// wrutten brings us here
-				console.log('on written handler');
 				test.equals(model.prop1, 'update');
 				test.done();
 			});
 			model.watchLocal('prop1');
 			model.prop1 = "update";
+		},
+		'nested': function (test) {
+			test.expect(1);
+			var model = new Fm.Model(this.ref.child('nested'), testBP.nested);
+
+			model.write();
+
+			// TODO do watchLocal on all nested properties by default
+			model.prop3.sub1b.watchLocal('sub2a');
+
+			model.prop3.sub1b.sub2a = "new deep value";
+
+			model.on('delivered', function(key){
+				test.equals(model.prop3.sub1a.sub2a, 'new deep value');
+				test.done();
+			});
+			model.on('error', function(err){
+				console.log('TODO catch error');
+			});
+
 		}
 	}
 };
