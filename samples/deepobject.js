@@ -50,10 +50,10 @@ var Model = function(ref, bp){
 									//if (err) this._emit('error');
 								});
 						} else if (_value !== val) {
-							// TODO let knoe firebase
-							// the problem is here that what we need is the trigger which is nested
-							// but the save can happen on the whole tree not only the nested part which got changed
-							// is it good?
+							// need set watcher on most nested object
+							// watching object will not fire any event as the reference is not changing
+							// TODO solution - set observer on object would set observers on all primitives in object tree
+							// not on array / list
 							if (typeof val === 'object') {
 								_value = new Model(this._ref.child(key), val);
 							} else {
