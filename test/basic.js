@@ -5,6 +5,23 @@ process.on('uncaugthException', function(err){
 var Fm = require('../build/firebase-mapper.js');
 var Firebase = require('firebase');
 
+var testBP = {
+	simple: {
+		prop1: "prop1",
+		prop2: "prop2"
+	},
+	nested: {
+		prop1: "prop1",
+		prop2: "prop2",
+		prop3: {
+			sub1a: "sub 1 a",
+			sub1b: {
+				sub2a: "sub 2 a"
+			}
+		}
+	}
+};
+
 module.exports = {
 	'test basic': {
 		'setUp': function(done) {
@@ -37,6 +54,25 @@ module.exports = {
 			});
 			test.ok(ts1 < provider.priority < Date.now(), 'expect unix timestamp');
 			test.done();
+		}
+	},
+	'test Model': {
+		'setUp': function(done) {
+			this.ref = new Firebase('http://sagavera.firebaseop.com/testsimple');
+			done();
+		},
+		'simple': function (test) {
+			test.expect(2);
+			var model = new Fm.Model(this.ref, testBP.simple);
+			test.equals(model.prop1, "prop1", "Expect prop1 and got " + model.prop1);
+			model.on('written', function(){
+				// wrutten brings us here
+				console.log('on written handler');
+				test.equals(model.prop1, 'update');
+				test.done();
+			});
+			model.watchLocal('prop1');
+			model.prop1 = "update";
 		}
 	}
 };
