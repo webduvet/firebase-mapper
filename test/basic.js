@@ -58,12 +58,14 @@ module.exports = {
 	},
 	'test Model': {
 		'setUp': function(done) {
-			this.ref = new Firebase('http://sagavera.firebaseop.com/testsimple');
+			this.ref = new Firebase('http://sagavera.firebaseio.com/testsimple');
 			done();
 		},
 		'simple': function (test) {
 			test.expect(2);
 			var model = new Fm.Model(this.ref, testBP.simple);
+			// TODO if not write then watchLocal does not trigger written..
+			// model.write();
 			test.equals(model.prop1, "prop1", "Expect prop1 and got " + model.prop1);
 			model.on('written', function(){
 				// wrutten brings us here
