@@ -21,12 +21,20 @@ var Model = function(ref, bp){
 		writable: true,
 		value: ref
 	});
+	Object.defineProperty(this, '_watchedLocal', {
+		enumerable: false,
+		configurable: true,
+		writable: true,
+		value: []
+	});
 	for ( var key in bp ) {
 		(function(key){
 			var _value = bp[key];
 			// TODO get rid of this it's useless
 			if ( Array.isArray( bp[key] ) ) {
 				setList(bp[key]);
+			} else if ( typeof bp[key] === 'object'){
+				this[key] = new Model(this._ref.child(key), bp[key]);
 			} else {
 				Object.defineProperty(this, key, {
 					enumerable: true,
@@ -35,8 +43,13 @@ var Model = function(ref, bp){
 						return _value;
 					},
 					set: function(val){
-						// TODO look into this we need it when creating object but no need to run this with the same values
-						if (true || _value !== val) {
+						if (_value !== val && this._watchedLocal.indexOf(key) >= 0) {
+							_value = val;
+							this._ref.child(key)
+								.set(val, function(err){
+									//if (err) this._emit('error');
+								});
+						} else if (_value !== val) {
 							// TODO let knoe firebase
 							// the problem is here that what we need is the trigger which is nested
 							// but the save can happen on the whole tree not only the nested part which got changed
@@ -45,9 +58,10 @@ var Model = function(ref, bp){
 								_value = new Model(this._ref.child(key), val);
 							} else {
 								_value = val;
-								this._ref.child(key).set(_value);
+								//this._ref.child(key).set(_value);
 							}
 						}
+						
 					}
 				});
 				//console.log("setting", key, _value);
@@ -56,12 +70,6 @@ var Model = function(ref, bp){
 			}
 		}.bind(this))(key);
 	}
-	Object.defineProperty(this, '_watchingLocal', {
-		enumerable: false,
-		configurable: true,
-		writable: true,
-		value: []
-	});
 
 	function setList(prop, bp) {
 		// TODO setup list
@@ -81,8 +89,19 @@ Object.defineProperty(Model.prototype, 'watchLocal', {
 	writable: false,
 	value: function(prop){
 		if (this.hasOwnProperty(prop)) {
-			this._watchingLocal.push(prop);
+			this._watchedLocal.push(prop);
 		}
+	}
+});
+
+Object.defineProperty(Model.prototype, 'write', {
+	enumerable: false,
+	configurable: true,
+	writable: false,
+	value: function(){
+		this._ref.set(this, function(err){
+			//if (err) this._emit('error',{msg: "DB write error"});
+		});
 	}
 });
 
@@ -103,10 +122,16 @@ var sample = {
 
 var m = new Model(ref.child('getset'), sample);
 
+m.write();
 
+m.watchLocal('prop1');
+m.watchLocal('prop3');
 
 m.prop1 = "hey";
 m.prop3 = { deep: "inside"};
+
+console.log(m.prop4.very_deep);
+m.prop4.very_deep.watchLocal('sub2');
 
 m.prop4.very_deep.sub2 = "XYZ";
 
@@ -115,3 +140,5 @@ m.prop4.very_deep.sub2 = "XYZ";
 // so technically it is cinstructor so it should be fine
 // we need first to add this property to model and then assign it a value - good idea :)
 m.prop4.very_deep.sub3 = "new sub 3";
+
+
