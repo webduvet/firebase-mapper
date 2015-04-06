@@ -59,7 +59,9 @@ module.exports = {
 	'test Model': {
 		'setUp': function(done) {
 			this.ref = new Firebase('http://sagavera.firebaseio.com/testsimple');
-			done();
+				done();
+			//this.ref.set(null, function(err){
+			//});
 		},
 		'simple': function (test) {
 			test.expect(2);
@@ -88,7 +90,7 @@ module.exports = {
 
 			model.prop3.sub1b.sub2a = "new deep value";
 
-			model.on('delivered', function(key){
+			model.prop3.sub1b.on('delivered', function(key){
 				test.equals(model.prop3.sub1a.sub2a, 'new deep value');
 				test.done();
 			});
@@ -96,6 +98,15 @@ module.exports = {
 				console.log('TODO catch error');
 			});
 
+		},
+		'modelFactory': function (test) {
+			test.expect(2);
+			var mf = new Fm.ModelFactory(this.ref.child('modelfactory'), testBP.simple);
+			var m = mf.create();
+
+			test.ok(m instanceof Mf.Model, "expecting instance of Fm.Model");
+			test.equals(m.prop1, 'prop1');
+			test.done();
 		}
 	}
 };
