@@ -346,3 +346,9 @@ it is possible and vital for a model to contain a list (not endless)
 e.g. - a game contains a limitted amoutn of players
 
 
+
+## long term TODO
+
+Model and Reference and List shouls inherit from let say Fm.Object
+
+Wrap Firebase in to DBobject

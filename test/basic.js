@@ -42,6 +42,8 @@ module.exports = {
 			test.equals(typeof Fm.ModelFactory, 'function', 'expect typeof function and got', typeof Fm.ModelFactory);
 			test.equals(typeof Fm.List, 'function', 'expect typeof function and got', typeof Fm.List);
 			test.equals(typeof Fm.ListFactory, 'function', 'expect typeof function and got', typeof Fm.ListFactory);
+			test.equals(typeof Fm.Reference, 'function', 'expect typeof function and got', typeof Fm.Reference);
+			test.equals(typeof Fm.ReferenceFactory, 'function', 'expect typeof function and got', typeof Fm.ReferenceFactory);
 			test.done();
 		},
 		'test exceptions': function(test) {
