@@ -19,6 +19,14 @@ var testBP = {
 				sub2a: "sub 2 a"
 			}
 		}
+	},
+	nestedReferenceList: {
+		prop1: "prop1",
+		prop2: ["list", {
+			factory: new Fm.ReferenceFactory(new Firebase('https://sagavera.firebaseio.com/primarylist')),
+			type: ["rich_ref"],
+			keyType: ["unique"] 
+		}]
 	}
 };
 
@@ -106,6 +114,14 @@ module.exports = {
 
 			test.ok(m instanceof Fm.Model, "expecting instance of Fm.Model");
 			test.equals(m.prop1, 'prop1');
+			test.done();
+		},
+		'modelWithNestedReferenceList': function(test) {
+			test.expect(2);
+			var m = new Fm.Model(this.ref.child('nestedReferenceList', testBP.nestedList));
+
+			test.ok( m.prop2 instanceof Fm.List, "Expect instance of a Fm.List" );
+			test.equals( typeof m.prop2.reference, 'function', "expect the method .reference()");
 			test.done();
 		}
 	}

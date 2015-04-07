@@ -333,7 +333,7 @@ example:
 ## TODO:
 
 #### Reference model
-we can just include anotier non enumerable property __reference:true
+we can just include another non enumerable property __reference:true
 this can be part of the list though - and it should - in that case the key is a reference by default
 
 #### relations and associations
