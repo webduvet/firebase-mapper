@@ -327,9 +327,22 @@ example:
 
 
 
-TODO
-the object and nested objects should have flag saying auto update, so all changes on DB can be immediatelly propagated into object
-with this we need to wait with save until the read/update is finished.
-it either should throw and error, wrning or just updates the just read property. TODO - decide
 ...
+
+
+## TODO:
+
+#### Reference model
+we can just include anotier non enumerable property __reference:true
+this can be part of the list though - and it should - in that case the key is a reference by default
+
+#### relations and associations
+we have no concept of relations - mainly to have references and denormalization
+the only notiion right now is to decorate the create method owith something
+relation should be created on create and propagated to DB on write
+
+#### list within a model
+it is possible and vital for a model to contain a list (not endless) 
+e.g. - a game contains a limitted amoutn of players
+
 
