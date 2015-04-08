@@ -4,7 +4,31 @@ var ref = new Firebase('https://sagavera.firebaseio.com');
 var rand = Math.random;
 var TDIFF;
 
+var obj = {
+	test:
+	{
+		first:
+		{
+			second:
+			{
+				third:
+				{
+					fourth:
+					{
+						fifth:
+						{
+							prop1: "prop1",
+							prop2: "prop2",
+							prop3: "prop3"
+						}
+					}
+				}
+			}
+		}
+	}
+};
 
+ref.child('test').set(obj.test);
 
 console.time('timestamp');
 ref.child('test/ts').set(Firebase.ServerValue.TIMESTAMP, function(err){
@@ -61,6 +85,7 @@ setTimeout(function(){
 setTimeout(function(){
 	console.log("priority ...");
 	console.time('sv');
+	console.log('setting this as priority', TDIFF + Date.now());
 	ref.child('test').child('first/second/third/fourth/fifth/prop2')
 	.setPriority(TDIFF + Date.now());
 }, 3000);
@@ -138,7 +163,7 @@ child_changed returns as well the whole object from listened location if the pri
 
 however - when using Firebase ServerValue.TIMESTAMP as priority
 the process is as follows
-prioroty is replaced with placeholder, and the callback is immediatelly fired (where is the priority from I have no idea) as the write op is very fast (about 4ms)
+prioroty is replaced with placeholder, and the callback is immediatelly fired locally (where is the priority from I have no idea) as the write op is very fast (about 4ms)
 right after the Server replace the placeholder with timestamp (350ms) the event is triggered again showing the correct timestamp
 
 
