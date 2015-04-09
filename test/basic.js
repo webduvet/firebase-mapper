@@ -23,9 +23,14 @@ var testBP = {
 	nestedReferenceList: {
 		prop1: "prop1",
 		prop2: ["list", {
-			factory: new Fm.ReferenceFactory(new Firebase('https://sagavera.firebaseio.com/primarylist')),
-			type: ["rich_ref"],
-			keyType: ["unique"] 
+			// no need to create ref to path as the path is given by Model - property
+			factory: {
+				fclass: Fm.ReferenceFactory,
+				mclass: Fm.Reference
+			},
+			blueprint: 'bool',
+			type: "rich_ref",
+			keyType: "unique" 
 		}]
 	}
 };
@@ -36,7 +41,7 @@ module.exports = {
 			done();
 		},
 		'all in place': function(test) {
-			test.expect(5);
+			test.expect(7);
 			test.equals(typeof Fm, 'object', 'expect object got: ', typeof Fm);
 			test.equals(typeof Fm.Model, 'function', 'expect typeof function and got', typeof Fm.Model);
 			test.equals(typeof Fm.ModelFactory, 'function', 'expect typeof function and got', typeof Fm.ModelFactory);
@@ -93,7 +98,7 @@ module.exports = {
 			test.expect(1);
 			var model = new Fm.Model(this.ref.child('nested'), testBP.nested);
 
-			model.write();
+			model.save();
 
 			// TODO do watchLocal on all nested properties by default
 			model.prop3.sub1b.watchLocal('sub2a');
@@ -111,7 +116,7 @@ module.exports = {
 		},
 		'modelFactory': function (test) {
 			test.expect(2);
-			var mf = new Fm.ModelFactory(this.ref.child('modelfactory'), testBP.simple);
+			var mf = new Fm.ModelFactory(this.ref.child('modelfactory'), testBP.simple, Fm.Model);
 			var m = mf.create();
 
 			test.ok(m instanceof Fm.Model, "expecting instance of Fm.Model");
@@ -120,7 +125,9 @@ module.exports = {
 		},
 		'modelWithNestedReferenceList': function(test) {
 			test.expect(2);
-			var m = new Fm.Model(this.ref.child('nestedReferenceList', testBP.nestedList));
+
+			var m = new Fm.Model(this.ref.child('nestedReferenceList'), testBP.nestedReferenceList);
+			console.log(m);
 
 			test.ok( m.prop2 instanceof Fm.List, "Expect instance of a Fm.List" );
 			test.equals( typeof m.prop2.reference, 'function', "expect the method .reference()");
