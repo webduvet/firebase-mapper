@@ -139,7 +139,10 @@ module.exports = {
 			test.ok( m.prop2.factory instanceof Fm.ReferenceFactory, "factory in list is expected to be instance of ReferenceFactory");
 			test.ok( m.prop2.factory instanceof Fm.ModelFactory, "factory in list is expected to be instance of ModelFactory");
 
-			m.prop2.add('testref',true);
+			m.prop2.add('testref1');
+			m.prop2.add('testref2');
+			m.prop2.add('testref3');
+			m.prop2.add('testref4');
 
 			test.done();
 		}
