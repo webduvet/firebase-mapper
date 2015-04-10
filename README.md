@@ -38,6 +38,14 @@ reference can be as simple as {KEY:true} creating a simple list of references (p
 but it can contain denormalized parts from primary object, or other informative objects like counters.
 Reference object can't be refered again by another reference.
 
+Reference is a pointer to another location in DB.
+it could be as value, but the faster and better way is store them as key and value as simple as true or another descriptive object with
+extra information e.g. timestamp of creation of reference or some denormalized values for faster access.
+
+How to construct the reference?
+we need LOCATION of the original. This could be path or DB reference to location.
+we can have a model instance as well which contains the path and DB reference.
+
 ###### Plain reference
 this plainly refers to primary object in the form {KEY}:true
 
