@@ -30,7 +30,16 @@ var testBP = {
 				mclass: Fm.Reference,
 				blueprint: 'bool'
 			},
-			type: "rich_ref",
+			type: "simple",
+			keyType: "unique" 
+		}],
+		prop3: ["list", {
+			factory: {
+				fclass: Fm.ReferenceFactory,
+				mclass: Fm.Reference,
+				blueprint: {s1: "test", s2: null}
+			},
+			type: "rich",
 			keyType: "unique" 
 		}]
 	}
@@ -143,6 +152,16 @@ module.exports = {
 			m.prop2.add('testref2');
 			m.prop2.add('testref3');
 			m.prop2.add('testref4');
+
+			var rf = m.prop3.add('rich1');
+			rf.s1 = "asd";
+			rf.s2 = "qwe";
+			rf.save();
+
+			rf = m.prop3.add('rich2');
+			rf.s1 = "asd";
+			rf.s2 = "qwe";
+			rf.save();
 
 			test.done();
 		}
