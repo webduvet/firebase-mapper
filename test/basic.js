@@ -24,11 +24,12 @@ var testBP = {
 		prop1: "prop1",
 		prop2: ["list", {
 			// no need to create ref to path as the path is given by Model - property
+			// either factory config or factory itself
 			factory: {
 				fclass: Fm.ReferenceFactory,
-				mclass: Fm.Reference
+				mclass: Fm.Reference,
+				blueprint: 'bool'
 			},
-			blueprint: 'bool',
 			type: "rich_ref",
 			keyType: "unique" 
 		}]
@@ -124,13 +125,12 @@ module.exports = {
 			test.done();
 		},
 		'modelWithNestedReferenceList': function(test) {
-			test.expect(2);
+			test.expect(1);
 
 			var m = new Fm.Model(this.ref.child('nestedReferenceList'), testBP.nestedReferenceList);
 			console.log(m);
 
 			test.ok( m.prop2 instanceof Fm.List, "Expect instance of a Fm.List" );
-			test.equals( typeof m.prop2.reference, 'function', "expect the method .reference()");
 			test.done();
 		}
 	}
