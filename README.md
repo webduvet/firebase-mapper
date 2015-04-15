@@ -93,18 +93,44 @@ n.on('loaded', function(){
 ### Object Blueprint
 is object literal which serves as blueprint for ModelFactory to create new instances of a model or a list
 
-Blueprint represents the properties of the model. 
-it contains all properties set to null, so the model created does not change the shape once the properties are initialized.
-Blueprint contains information if nested element is `primitive` or `object literal` or `instance of a model` or `instance of a list`.
-Nested models or lists will cause instantiation of apropriate factory which will use the nested object as its' blueprint.
-The instance of factory of nested onject will reside within parent ModelFactory instance.
-Once the Model is created the child instance will create it's own part which is assigned to coresponding property.
+Blueprint for object only is javascript object. Values which have no default value are assign with `null`. This will not get propagated to 
+database on save action. 
+Blueprint for list is more specific and has the shape of an array with first value describing that it is a list and the second value is list
+config object containing the factory class, model class, path in database, and blueprint for object in the list.
+
+sample:
+
+	sampleBlueprint: {
+        prop1: "prop1",
+        prop2: ["list", {
+            factory: {
+				path: path.to.prop2
+                fclass: Fm.ReferenceFactory,
+                mclass: Fm.Reference,
+                blueprint: 'bool'
+            },
+            type: "simple",
+            keyType: "unique"
+        }],
+        prop3: ["list", {
+            factory: {
+				path: path.to.prop3
+                fclass: Fm.ReferenceFactory,
+                mclass: Fm.Reference,
+                blueprint: {s1: "test", s2: null}
+            },
+            type: "rich",
+            keyType: "unique"
+        }]
+    }
+
+the above example ilustrates the blueprint for object with 3 properties and one property contains a list of rich references and one is list of simple references.
 
 ### Model and Model Factory
 Model is created by factory instance. ModelFactory is a class of which constructor takes blueprint, url, and firebase reference as parameter.
 instance of ModelFactory will produce the models of the same blueprint. Each factory instance contains a decorating methods so 
 the cratoin of the model can be decorated with extra methods if needed - that however does not affect already created models.
-The methods like `write` can be decarated as well to accomodate some specific behaviour of some models (saving procedure affecting other parts of DB)
+The methods like `save` can be decarated as well to accomodate some specific behaviour of some models (saving procedure affecting other parts of DB)
 
 ### List and list Factory
 should be created with class of which object list should contain. list needs to have a method pushNew where creates new record. it should contain a paginator
