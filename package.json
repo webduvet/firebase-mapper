@@ -1,34 +1,38 @@
 {
-  "name": "firebase-mapper",
-  "version": "0.0.1",
-  "description": "Model representation of Firebase object",
-  "main": "samplelist.js",
-  "dependencies": {
-    "firebase": "^2.2.3"
-  },
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-jshint": "^0.11.1",
-    "grunt-contrib-nodeunit": "^0.4.1",
-    "grunt-contrib-uglify": "^0.8.1",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-contrib-yuidoc": "^0.7.0"
-  },
-  "scripts": {
-    "test": "testf.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/webduvet/firebase-mapper.git"
-  },
-  "keywords": [
-    "firebase"
-  ],
-  "author": "andrej bartko",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/webduvet/firebase-mapper/issues"
-  },
-  "homepage": "https://github.com/webduvet/firebase-mapper"
+	"name": "firebase-mapper",
+	"version": "0.0.1",
+	"description": "Model representation of Firebase object",
+	"main": "dist/firebase-mapper.js",
+	"files":[
+		"dist"
+		],
+	"dependencies": {
+		"firebase": "^2.2.3"
+	},
+	"devDependencies": {
+		"grunt": "^0.4.5",
+		"grunt-contrib-concat": "^0.5.1",
+		"grunt-contrib-jshint": "^0.11.1",
+		"grunt-contrib-nodeunit": "^0.4.1",
+		"grunt-contrib-uglify": "^0.8.1",
+		"grunt-contrib-watch": "^0.6.1",
+		"grunt-contrib-yuidoc": "^0.7.0"
+	},
+	"scripts": {
+		"test": "testf.js"
+	},
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/webduvet/firebase-mapper.git"
+	},
+	"keywords": [
+		"firebase",
+		"mapper"
+		],
+	"author": "andrej bartko",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/webduvet/firebase-mapper/issues"
+	},
+	"homepage": "https://github.com/webduvet/firebase-mapper"
 }
