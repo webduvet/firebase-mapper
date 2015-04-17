@@ -165,6 +165,7 @@ module.exports = {
 			rf.s2 = "qwe";
 			rf.save();
 
+			console.log(m);
 			m.save();
 
 			test.done();
