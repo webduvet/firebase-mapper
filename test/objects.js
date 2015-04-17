@@ -1,3 +1,6 @@
+
+Error.stackTraceLimit = Infinity;
+
 process.on('uncaugthException', function(err){
 	console.error(err.stack);
 });
@@ -52,14 +55,68 @@ module.exports = {
 		},
 		'model': function(test){
 
-			var Sample = Fm.Basic.child();
+			// referenced
+			var feedListConfig = {
+				factory: {
+					fclass: Fm.ReferenceFactory,
+					mclass: Fm.Reference,
+					blueprint: 'bool'
+				},
+				type: 'simple'
+			};
 
-			console.log(Sample.child.toString());
-			Fm.Basic.child = function(){return "haha"};
-			console.log(Sample.child.toString());
+			// referencing
+			var sampleBlueprint = {
+				title: null,
+				collection: ["list", {
+					factory:{
+						fclass: Fm.ReferenceFactory,
+						mclass: Fm.Reference,
+						blueprint: 'bool'
+					}
+				}]
+			};
+
+			var Sample = function(){
+				Fm.Model.apply(this, arguments);
+				Object.defineProperty(this, 'feedList', {
+					enumerable: false,
+					configurable: false,
+					writable: false,
+					value: new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/feed'), feedListConfig)
+				});
+			};
+			Sample.prototype = Object.create(Fm.Model.prototype);
+			Sample.prototype.constructor = Sample;
+
+			Object.defineProperty(Sample.prototype, "save", {
+				  enumerable: false
+				, configurable: true
+				, writable: false
+				, value: function(){
+					console.log(this);
+					Fm.Model.prototype.save.apply(this,arguments);
+					for (var key in this.collection) {
+						var item = this.FeedList.add(key);
+						// here populate item or just save as true;
+						item.save();
+					}
+				}
+			});
+
+
+			var sampleFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/models"), sampleBlueprint, Sample);
 
 			test.ok(Sample.prototype instanceof Fm.Basic, 'expect instance of Fm.Basic');
-			test.ok(Sample.hasOwnProperty('child'), 'expect static method child');
+
+			var sample = sampleFactory.create();
+			sample.title = "room1";
+			var item1 = sample.collection.add('item1');
+			//item1.save();
+			var item2 = sample.collection.add('item2');
+			//item2.save();
+			console.log(sample);
+			sample.save();
 
 			test.done();
 		}

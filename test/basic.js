@@ -140,13 +140,15 @@ module.exports = {
 			test.done();
 		},
 		'modelWithNestedReferenceList': function(test) {
-			test.expect(3);
+			test.expect(5);
 
 			var m = new Fm.Model(this.ref.child('nestedReferenceList'), testBP.nestedReferenceList);
 
 			test.ok( m.prop2 instanceof Fm.List, "Expect instance of a Fm.List" );
 			test.ok( m.prop2.factory instanceof Fm.ReferenceFactory, "factory in list is expected to be instance of ReferenceFactory");
 			test.ok( m.prop2.factory instanceof Fm.ModelFactory, "factory in list is expected to be instance of ModelFactory");
+			test.ok(m.prop2 instanceof Fm.List, 'expect instance of List');
+			test.ok(m.prop3 instanceof Fm.List, 'expect instance of List');
 
 			m.prop2.add('testref1');
 			m.prop2.add('testref2');
@@ -162,6 +164,8 @@ module.exports = {
 			rf.s1 = "asd";
 			rf.s2 = "qwe";
 			rf.save();
+
+			m.save();
 
 			test.done();
 		}
