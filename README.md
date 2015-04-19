@@ -132,25 +132,59 @@ instance of ModelFactory will produce the models of the same blueprint. Each fac
 the cratoin of the model can be decorated with extra methods if needed - that however does not affect already created models.
 The methods like `save` can be decarated as well to accomodate some specific behaviour of some models (saving procedure affecting other parts of DB)
 
-### List and list Factory
-should be created with class of which object list should contain. list needs to have a method pushNew where creates new record. it should contain a paginator
-or endless scrolling feature.
-should take care of priorities.
-should allow for changing prioritties within the list.
-should listen for all relevant events:
-	
-	child_added
-	child_moved
-	chiled_removed
+### List
+contains the methods to interact with DB.
 
-as well as limitLast and LimitFirst esoecially in relation to paginator.
+pushes new item to the list, creates autoID - suitable for primary objects
 
-There kshould be no option/need to modify items in the list from the List directly. e.g. give me list record XZY and I add XZY.name. Big no no.
-List Items, if they are full objects can be modified via Model
-if they are rich references, those are modified via application logic. let say, xzy.pagevisits++.
-if they are plain references - those can't be modified. only removed.
-List does not have any methods to modify the items inside - only via Models or directly from App logic.
-Lists are primarily used as list of references for display / search purposes.
+	.push()
+
+adds the object under specified ID - suits references, only id for simple references, object provided for rich references
+
+	.add(id [,obj])
+
+get object by id from list;
+
+	.get(id)
+
+remove object by id from list and DB
+
+	.remove(id)
+
+sets priority for the item in the list
+
+	.setPriority(id, priority)
+
+##### Events
+
+###### ChildAdded
+remote event propagated from Firebase
+
+###### ChildRemoved
+Remote event propagated from firebase
+
+###### OrderChanged
+Remote Event propagated from firebase
+
+
+#### Long List
+is the type of list which can grow endlessly. e.g. registered users, ur user comments etc. This list is a wrapper for DB operations on list
+endless list does not load the actuall list into local memory
+
+TODO
+does load a page in paginator
+
+#### Short List
+is the type of list which contains short amount of items which could be loaded into memory at once
+the interaction with db is the same as long lists. However short list sould be able to add items localy and save the into remote.
+
+
+TODO
+set in config the max lenght of short list, for now it is up to programmer decission
+
+
+
+
 
 ### Reference and Reference Factory
 this is object refering to primary object. 
