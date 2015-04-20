@@ -108,7 +108,7 @@ module.exports = {
 
 			// notification blueprint
 			var notBlueprint = {
-				gallery: null,
+				itemid: null,
 				msg: "",
 				type: "gallery"
 			};
@@ -121,6 +121,11 @@ module.exports = {
 				}
 			}];
 
+			// TODO notification list needs to push new notifications to location /notifications/userid/notificationAutoId
+			// need to provide for userid
+			// but reading the list we cen set ref to userid child
+			var notifications = new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/notifications'), notificationList);
+
 
 			var Gallery = function(){
 				Fm.Model.apply(this, arguments);
@@ -130,11 +135,16 @@ module.exports = {
 
 			Gallery.prototype.save = function(){
 				console.log(this);
+				// save the Gallery object
 				Fm.Model.prototype.save.apply(this,arguments);
+
+				// do some other work like saving
+				// reference to audience
 				for (var key in this.audience) {
-					var item = this.feedList.add(key);
-					// here populate item or just save as true;
-					item.save();
+					notifications.notify(key);
+					var notification = notifications.push();
+					notification.itemid = this._key;
+					notification.msg = "created";
 				}
 			};
 
