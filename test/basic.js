@@ -42,6 +42,20 @@ var testBP = {
 			type: "rich",
 			keyType: "unique" 
 		}]
+	},
+	nestedShortList: {
+		prop1: "prop1",
+		prop2: ["shortlist", {
+			// no need to create ref to path as the path is given by Model - property
+			// either factory config or factory itself
+			factory: {
+				fclass: Fm.ReferenceFactory,
+				mclass: Fm.Reference,
+				blueprint: 'true'
+			},
+			type: "simple",
+			keyType: "unique" 
+		}]
 	}
 };
 
@@ -154,7 +168,6 @@ module.exports = {
 			m.prop2.add('testref2').save();
 			m.prop2.add('testref3').save();
 			m.prop2.add('testref4').save();
-			
 
 			var rf = m.prop3.add('rich1');
 			rf.s1 = "asd";
@@ -166,9 +179,29 @@ module.exports = {
 			rf.s2 = "qwe";
 			rf.save();
 
-			console.log(m);
 			// TODO if we have a list within a object saving the object will delete the existing nested list on DB
 			// m.save();
+
+			test.done();
+		},
+		"modelWithNestedShortList": function(test){
+			test.expect(4);
+
+			var m = new Fm.Model(this.ref.child('nestedShortList'), testBP.nestedShortList);
+
+			test.ok( m.prop2 instanceof Fm.List, "Expect instance of a Fm.List" );
+			test.ok( m.prop2.factory instanceof Fm.ReferenceFactory, "factory in list is expected to be instance of ReferenceFactory");
+			test.ok( m.prop2.factory instanceof Fm.ModelFactory, "factory in list is expected to be instance of ModelFactory");
+			test.ok(m.prop2 instanceof Fm.ShortList, 'expect instance of ShortList');
+
+			m.prop2.add('testref1');
+			m.prop2.add('testref2');
+			m.prop2.add('testref3');
+			m.prop2.add('testref4');
+
+			console.log(m);
+
+			m.save();
 
 			test.done();
 		}
