@@ -103,7 +103,7 @@ module.exports = {
 			// TODO model.write and watchLocal need to trigger different event. !!!
 			// TODO watchLocal can trigger two events - sentToRemote (sent) and deliveredToRemote(delivered)
 			model.on('delivered', function(){
-				// wrutten brings us here
+				// written brings us here
 				test.equals(model.prop1, 'update');
 				test.done();
 			});

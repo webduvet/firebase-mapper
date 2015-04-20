@@ -25,7 +25,7 @@ var testBP = {
 	},
 	nestedReferenceList: {
 		prop1: "prop1",
-		prop2: ["list", {
+		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
 			factory: {
@@ -36,7 +36,7 @@ var testBP = {
 			type: "simple",
 			keyType: "unique" 
 		}],
-		prop3: ["list", {
+		prop3: ["longlist", {
 			factory: {
 				fclass: Fm.ReferenceFactory,
 				mclass: Fm.Reference,
@@ -68,7 +68,7 @@ module.exports = {
 			// referencing
 			var sampleBlueprint = {
 				title: null,
-				collection: ["list", {
+				collection: ["longlist", {
 					factory:{
 						fclass: Fm.ReferenceFactory,
 						mclass: Fm.Reference,
