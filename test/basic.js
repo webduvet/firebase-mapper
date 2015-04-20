@@ -22,18 +22,18 @@ var testBP = {
 	},
 	nestedReferenceList: {
 		prop1: "prop1",
-		prop2: ["list", {
+		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
 			factory: {
 				fclass: Fm.ReferenceFactory,
 				mclass: Fm.Reference,
-				blueprint: 'bool'
+				blueprint: 'true'
 			},
 			type: "simple",
 			keyType: "unique" 
 		}],
-		prop3: ["list", {
+		prop3: ["longlist", {
 			factory: {
 				fclass: Fm.ReferenceFactory,
 				mclass: Fm.Reference,
@@ -166,7 +166,8 @@ module.exports = {
 			rf.save();
 
 			console.log(m);
-			m.save();
+			// TODO if we have a list within a object saving the object will delete the existing nested list on DB
+			// m.save();
 
 			test.done();
 		}
