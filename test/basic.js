@@ -150,10 +150,11 @@ module.exports = {
 			test.ok(m.prop2 instanceof Fm.List, 'expect instance of List');
 			test.ok(m.prop3 instanceof Fm.List, 'expect instance of List');
 
-			m.prop2.add('testref1');
-			m.prop2.add('testref2');
-			m.prop2.add('testref3');
-			m.prop2.add('testref4');
+			m.prop2.add('testref1').save();
+			m.prop2.add('testref2').save();
+			m.prop2.add('testref3').save();
+			m.prop2.add('testref4').save();
+			
 
 			var rf = m.prop3.add('rich1');
 			rf.s1 = "asd";
