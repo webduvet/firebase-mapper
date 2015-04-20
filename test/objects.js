@@ -25,18 +25,18 @@ var testBP = {
 	},
 	nestedReferenceList: {
 		prop1: "prop1",
-		prop2: ["list", {
+		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
 			factory: {
 				fclass: Fm.ReferenceFactory,
 				mclass: Fm.Reference,
-				blueprint: 'bool'
+				blueprint: 'true'
 			},
 			type: "simple",
 			keyType: "unique" 
 		}],
-		prop3: ["list", {
+		prop3: ["longlist", {
 			factory: {
 				fclass: Fm.ReferenceFactory,
 				mclass: Fm.Reference,
@@ -49,67 +49,101 @@ var testBP = {
 };
 
 module.exports = {
-	'test basic': {
+	'test object': {
 		'setUp': function(done) {
 			done();
 		},
-		'model': function(test){
+		'complex model': function(test){
 
-			// referenced
-			var feedListConfig = {
-				factory: {
-					fclass: Fm.ReferenceFactory,
-					mclass: Fm.Reference,
-					blueprint: 'bool'
-				},
-				type: 'simple'
+			/**
+			 * testing scanario user - gallery pictures
+			 * where user can create gallery
+			 * gallery is owned by user
+			 * gallery can contain up to 10 pictures
+			 * which are stored under pictures object
+			 * gallery has audience of users
+			 * if gallery is created each user in audience gets the notification
+			 * if picture is added to gallery each user in audience gets notification
+			 *
+			 * for this sample we need gallery blueprint as we create gallery
+			 * picture blueprint as we add picture
+			 * notification bueprint as we create notification
+			 * we can fake user ID.
+			 */
+
+			var fakeUserIds = ['user1', 'user2', 'user3', 'user4'];
+
+			var imgBlueprint = {
+				path: null,
+				title: null
 			};
 
-			// referencing
-			var sampleBlueprint = {
+			var imgListBp = ["longlist",{
+				factory:{
+					fclass: Fm.ModelFactory,
+					mclass: Fm.Model,
+					blueprint: imgBlueprint
+				}
+			}];
+
+			// gallery blueprint
+			var galleryBlueprint = {
 				title: null,
-				collection: ["list", {
+				owner: null,
+				pictures: ["shortlist", {
 					factory:{
 						fclass: Fm.ReferenceFactory,
 						mclass: Fm.Reference,
-						blueprint: 'bool'
+						blueprint: 'true'
+					}
+				}],
+				audience: ["shortlist", {
+					factory:{
+						fclass: Fm.ReferenceFactory,
+						mclass: Fm.Reference,
+						blueprint: 'true'
 					}
 				}]
 			};
 
-			var Sample = function(){
-				Fm.Model.apply(this, arguments);
-				Object.defineProperty(this, 'feedList', {
-					enumerable: false,
-					configurable: false,
-					writable: false,
-					value: new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/feed'), feedListConfig)
-				});
+			// notification blueprint
+			var notBlueprint = {
+				gallery: null,
+				msg: "",
+				type: "gallery"
 			};
-			Sample.prototype = Object.create(Fm.Model.prototype);
-			Sample.prototype.constructor = Sample;
 
-			Object.defineProperty(Sample.prototype, "save", {
-				  enumerable: false
-				, configurable: true
-				, writable: false
-				, value: function(){
-					console.log(this);
-					Fm.Model.prototype.save.apply(this,arguments);
-					for (var key in this.collection) {
-						var item = this.FeedList.add(key);
-						// here populate item or just save as true;
-						item.save();
-					}
+			var notificationList = ["longlist",{
+				factory:{
+					fclass: Fm.ModelFactory,
+					mclass: Fm.Model,
+					blueprint: notBlueprint
 				}
-			});
+			}];
+
+
+			var Gallery = function(){
+				Fm.Model.apply(this, arguments);
+			};
+			Gallery.prototype = Object.create(Fm.Model.prototype);
+			Gallery.prototype.constructor = Gallery;
+
+			Gallery.prototype.save = function(){
+				console.log(this);
+				Fm.Model.prototype.save.apply(this,arguments);
+				for (var key in this.audience) {
+					var item = this.feedList.add(key);
+					// here populate item or just save as true;
+					item.save();
+				}
+			};
 
 
 			var sampleFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/models"), sampleBlueprint, Sample);
 
 			test.ok(Sample.prototype instanceof Fm.Basic, 'expect instance of Fm.Basic');
 
-			var sample = sampleFactory.create();
+			var sample = sampleFactory.push();
 			sample.title = "room1";
 			var item1 = sample.collection.add('item1');
 			//item1.save();

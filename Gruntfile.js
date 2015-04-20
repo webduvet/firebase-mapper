@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 			},
 			build:
 			{
-				src:['lib/fm.js', 'lib/basic.js', 'lib/model*.js', 'lib/list*.js', 'lib/reference*.js', 'lib/exception*.js', 'lib/provider*.js'],
+				src:['lib/fm.js', 'lib/basic.js', 'lib/model*.js', 'lib/list*.js','lib/shortlist.js' , 'lib/reference*.js', 'lib/exception*.js', 'lib/provider*.js'],
 				dest:"build/<%= pkg.name %>.js"
 			}
 		},
