@@ -141,10 +141,12 @@ module.exports = {
 				// do some other work like saving
 				// reference to audience
 				for (var key in this.audience) {
+
+					var notification = notifications.pushUnder(key);
 					notifications.notify(key);
-					var notification = notifications.push();
 					notification.itemid = this._key;
 					notification.msg = "created";
+					notification.save();
 				}
 			};
 
