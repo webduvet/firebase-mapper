@@ -97,7 +97,7 @@ module.exports = {
 					console.log(this);
 					Fm.Model.prototype.save.apply(this,arguments);
 					for (var key in this.collection) {
-						var item = this.FeedList.add(key);
+						var item = this.feedList.add(key);
 						// here populate item or just save as true;
 						item.save();
 					}
