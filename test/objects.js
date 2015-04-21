@@ -124,7 +124,7 @@ module.exports = {
 			// TODO notification list needs to push new notifications to location /notifications/userid/notificationAutoId
 			// need to provide for userid
 			// but reading the list we cen set ref to userid child
-			var notifications = new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/notifications'), notificationList);
+			var notifications = new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/notifications'), notificationList[1]);
 
 
 			var Gallery = function(){
@@ -151,7 +151,7 @@ module.exports = {
 			};
 
 
-			var sampleFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/models"), sampleBlueprint, Sample);
+			var sampleFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/models"), galleryBlueprint, Gallery);
 
 
 			test.done();

@@ -65,12 +65,11 @@ module.exports = {
 			done();
 		},
 		'all in place': function(test) {
-			test.expect(10);
+			test.expect(9);
 			test.equals(typeof Fm, 'object', 'expect object got: ', typeof Fm);
 			test.equals(typeof Fm.Model, 'function', 'expect typeof function and got', typeof Fm.Model);
 			test.equals(typeof Fm.ModelFactory, 'function', 'expect typeof function and got', typeof Fm.ModelFactory);
 			test.equals(typeof Fm.List, 'function', 'expect typeof function and got', typeof Fm.List);
-			test.equals(typeof Fm.ListFactory, 'function', 'expect typeof function and got', typeof Fm.ListFactory);
 			test.equals(typeof Fm.Reference, 'function', 'expect typeof function and got', typeof Fm.Reference);
 			test.equals(typeof Fm.ReferenceFactory, 'function', 'expect typeof function and got', typeof Fm.ReferenceFactory);
 			test.ok(Fm.Model.prototype instanceof Fm.Basic, 'Fm.Model is expected to inherit from Fm.Basic');
