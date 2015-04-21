@@ -5,8 +5,8 @@ process.on('uncaugthException', function(err){
 	console.error(err.stack);
 });
 
-var Fm = require('../build/firebase-mapper.js');
 var Firebase = require('firebase');
+var Fm = require('../build/firebase-mapper.js')(Firebase);
 
 var testBP = {
 	simple: {
