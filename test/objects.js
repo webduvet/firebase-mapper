@@ -107,7 +107,7 @@ module.exports = {
 			};
 
 			// notification blueprint
-			var notBlueprint = {
+			var notiBlueprint = {
 				itemid: null,
 				msg: "",
 				type: "gallery"
@@ -117,7 +117,7 @@ module.exports = {
 				factory:{
 					fclass: Fm.ModelFactory,
 					mclass: Fm.Model,
-					blueprint: notBlueprint
+					blueprint: notiBlueprint
 				}
 			}];
 
@@ -125,6 +125,8 @@ module.exports = {
 			// need to provide for userid
 			// but reading the list we cen set ref to userid child
 			var notifications = new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/notifications'), notificationList[1]);
+
+			console.log(notifications.push());
 
 
 			var Gallery = function(){
@@ -134,7 +136,6 @@ module.exports = {
 			Gallery.prototype.constructor = Gallery;
 
 			Gallery.prototype.save = function(){
-				console.log(this);
 				// save the Gallery object
 				Fm.Model.prototype.save.apply(this,arguments);
 
@@ -142,17 +143,28 @@ module.exports = {
 				// reference to audience
 				for (var key in this.audience) {
 
-					var notification = notifications.pushUnder(key);
-					notifications.notify(key);
-					notification.itemid = this._key;
-					notification.msg = "created";
-					notification.save();
+					if(this.audience.hasOwnProperty(key)) {
+						var notification = notifications.pushUnder(key);
+						notification.itemid = "this id";
+						notification.msg = "created";
+						notification.save();
+					}
 				}
 			};
 
 
-			var sampleFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/models"), galleryBlueprint, Gallery);
+			var galleryFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/gallery"), galleryBlueprint, Gallery);
 
+			var myGal = galleryFactory.create();
+
+			myGal.title = "test Title";
+			myGal.owner = "get_curent_User_ID";
+			myGal.audience.add("user1");
+			myGal.audience.add("user2");
+			myGal.audience.add("user3");
+			myGal.pictures.add("pic1");
+
+			myGal.save();
 
 			test.done();
 		}
