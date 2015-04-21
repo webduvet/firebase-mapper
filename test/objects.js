@@ -153,16 +153,6 @@ module.exports = {
 
 			var sampleFactory = new Fm.ModelFactory(new Firebase("https://sagavera.firebaseio.com/sampleRef/models"), sampleBlueprint, Sample);
 
-			test.ok(Sample.prototype instanceof Fm.Basic, 'expect instance of Fm.Basic');
-
-			var sample = sampleFactory.push();
-			sample.title = "room1";
-			var item1 = sample.collection.add('item1');
-			//item1.save();
-			var item2 = sample.collection.add('item2');
-			//item2.save();
-			console.log(sample);
-			sample.save();
 
 			test.done();
 		}
