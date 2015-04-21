@@ -141,12 +141,21 @@ module.exports = {
 
 				// do some other work like saving
 				// reference to audience
-				for (var key in this.audience) {
+				this.notify('created');
+			};
 
+			Gallery.prototype.addPicture = function(pic){
+				// simple add, leave checking for existing from this
+				this.pictures.add(pic).save();
+				this.notify('picture_added');
+			};
+
+			Gallery.prototype.notify = function(msg){
+				for (var key in this.audience) {
 					if(this.audience.hasOwnProperty(key)) {
 						var notification = notifications.pushUnder(key);
-						notification.itemid = "this id";
-						notification.msg = "created";
+						notification.itemid = "todo this id";
+						notification.msg = msg;
 						notification.save();
 					}
 				}
@@ -157,14 +166,22 @@ module.exports = {
 
 			var myGal = galleryFactory.create();
 
-			myGal.title = "test Title";
+			myGal.title = "some title";
 			myGal.owner = "get_curent_User_ID";
+			// TODO add an array of references, we can do as well save_add -which will check all the refs
 			myGal.audience.add("user1");
 			myGal.audience.add("user2");
 			myGal.audience.add("user3");
+			myGal.audience.add("user4");
 			myGal.pictures.add("pic1");
+			myGal.pictures.add("pic2");
+			myGal.pictures.add("pic3");
 
 			myGal.save();
+
+
+			myGal.addPicture("pic88");
+
 
 			test.done();
 		}
