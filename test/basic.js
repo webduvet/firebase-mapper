@@ -199,8 +199,6 @@ module.exports = {
 			m.prop2.add('testref3');
 			m.prop2.add('testref4');
 
-			console.log(m);
-
 			m.save();
 
 			test.done();

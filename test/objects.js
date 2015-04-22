@@ -126,8 +126,6 @@ module.exports = {
 			// but reading the list we cen set ref to userid child
 			var notifications = new Fm.List(new Firebase('https://sagavera.firebaseio.com/sampleRef/notifications'), notificationList[1]);
 
-			console.log(notifications.push());
-
 
 			var Gallery = function(){
 				Fm.Model.apply(this, arguments);

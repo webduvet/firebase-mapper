@@ -19,7 +19,7 @@
     "grunt-contrib-yuidoc": "^0.7.0"
   },
   "scripts": {
-    "test": "nodeunit test"
+    "test": "grunt dist"
   },
   "repository": {
     "type": "git",
