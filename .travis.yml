@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - "0.12"
   - "iojs"
-before_install: npm install -g grunt-cli
-before_install: echo $PATH
-before_install: npm install -g nodeunit
+before_install: 
+  -  npm install -g nodeunit
+  -  npm install -g grunt-cli
 install: npm install
 before_script: grunt build
