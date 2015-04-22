@@ -1,4 +1,7 @@
 # firebase-mapper
+![Build Status](https://travis-ci.org/webduvet/firebase-mapper.svg?branch=master)
+
+
 Simple data mapper for firebase. Encapsulate the Firebase reference and the data model stored under the reference. firebase-mapper as well
 can handle the objects containing primary lists and lists from reference objects pointing to other databaswe locations.
 
