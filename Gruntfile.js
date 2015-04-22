@@ -60,6 +60,7 @@ module.exports = function(grunt) {
 
 	// Default task(s).
 	grunt.registerTask('default', ['jshint', 'concat', 'nodeunit', 'yuidoc']);
+	grunt.registerTask('build', ['jshint', 'concat' ]);
 	grunt.registerTask('dist', ['jshint', 'concat', 'uglify']);
 	grunt.registerTask('watch', ['watch']);
 	grunt.registerTask('test', ['nodeunit']);
