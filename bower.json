@@ -1,0 +1,17 @@
+{
+	"name": "firebase-mapper",
+	"decription": "js representation of firebase objects enriched with additional handy features making interation woth Db smoother",
+	"main": "./dist/firebase-mapper.js",
+	"moduleType": "globals",
+	"license": "MIT",
+	"authors": [
+		{"name": "andrej bartko", "email": "andrej.bartko@gmail.com"}
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/webduvet/firebase-mapper.git"
+	},
+	"dependencies" : {
+		"firebase": "~latest"
+	}
+}	
