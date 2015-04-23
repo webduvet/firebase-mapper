@@ -5,7 +5,7 @@ Development version
 
 
 Simple data mapper for firebase. Encapsulate the Firebase reference and the data model stored under the reference. firebase-mapper as well
-can handle the objects containing primary lists and lists from reference objects pointing to other databaswe locations.
+can handle the objects containing primary lists and lists from reference objects pointing to other database locations.
 
 ## Example
 
@@ -24,10 +24,10 @@ Chatroom object contains a list of user references to indicate who is in the cha
 
 ## Motivation
 Storing data in document storage requires certain level of denormalization. Developer very quickly moves away from all the nice tools relational database
-offers and swimms in deep water of denormalized data.
+offers and swims in deep water of denormalized data.
 
 Model representation.
-The document based databases have a great advantage that the documents does not need to folow the rigid structure. Not required fields are just not present.
+The document based databases have a great advantage that the documents does not need to follow the rigid structure. Not required fields are just not present.
 Firebase behaves in the very same way
 
 	ref.set({prop1: null, prop2, "sample"});
@@ -40,10 +40,10 @@ The Model representation is created from blueprint with all the optional and pos
 
 
 ## Solution
-Firebase is document type DBAAS, web or server client interacts with ratabase via Firebase referenVce where he passes a location to data. 
+Firebase is document type DBAAS, web or server client interacts with database via Firebase reference where he passes a location to data. 
 Any custom logic, more complex objects with relations to other objects and all CRUD operations need to be implemented on client or on server side.
-Firebase-mapper creates an object representing the database object and the ralation to other object through references. It sets up the shape of the 
-javascript object and allows to interact with data just by assigning valies to object's property with backround or explicit synchronization with database.
+Firebase-mapper creates an object representing the database object and the relation to other object through references. It sets up the shape of the 
+javascript object and allows to interact with data just by assigning values to object's property with background or explicit synchronisation with database.
 
 Blueprint and model tool is here define the object shape.  This project aims to create factory method which creates firebase friendly model representation of firebase data.
 In the blueprint we define the structure and relations and let the model figure out all the denormalized data.
@@ -80,7 +80,7 @@ from database
 	var n = list.get(id);
 	n.load();
 
-from object other object, it populates only the matching proprties and others are ignored
+from object other object, it populates only the matching properties and others are ignored
 
 	var n = modelFactory.create(ref);
 	n.loadFromObject(object); // TODO - us .load() -if a param is used then do not use DB but provided object
@@ -129,13 +129,13 @@ sample:
         }]
     }
 
-the above example ilustrates the blueprint for object with 3 properties and one property contains a list of rich references and one is list of simple references.
+the above example illustrates the blueprint for object with 3 properties and one property contains a list of rich references and one is list of simple references.
 
 ### Model and Model Factory
 Model is created by factory instance. ModelFactory is a class of which constructor takes blueprint, url, and firebase reference as parameter.
 instance of ModelFactory will produce the models of the same blueprint. Each factory instance contains a decorating methods so 
-the cratoin of the model can be decorated with extra methods if needed - that however does not affect already created models.
-The methods like `save` can be decarated as well to accomodate some specific behaviour of some models (saving procedure affecting other parts of DB)
+the the model can be decorated with extra methods if needed - that however does not affect already created models.
+The methods like `save` can be decorated as well to accommodate some specific behaviour of some models (saving procedure affecting other parts of DB)
 
 ### List
 contains the methods to interact with DB.
@@ -162,13 +162,13 @@ sets priority for the item in the list
 
 #### ShortList
 is the list which contains small number references or Models and all can be loaded in memory
-e.g. refrences in shopping cart
-Short list does everything what LongList does but extends the Object by the reference key. So it can be saved aspart of the parent model.
+e.g. references in shopping cart
+Short list does everything what LongList does but extends the Object by the reference key. So it can be saved as part of the parent model.
 
 #### LongList
 is the proper list where the number of items is limited only by hardware limitations. The items in the list can be loaded only via paginator
 and are not part of the own properties of the list object as short list. 
-If a model contains a long list (which is not recomended) the model can't be saved using save method. doing so would erase the list content.
+If a model contains a long list (which is not recommended) the model can't be saved using save method. doing so would erase the list content.
 
 ##### Events
 
@@ -183,8 +183,8 @@ Remote Event propagated from firebase
 
 
 #### Long List
-is the type of list which can grow endlessly. e.g. registered users, ur user comments etc. This list is a wrapper for DB operations on list
-endless list does not load the actuall list into local memory
+is the type of list which can grow endlessly. e.g. registered users, user comments etc. This list is a wrapper for DB operations on list
+endless list does not load the actual list into local memory
 
 TODO
 does load a page in paginator
@@ -195,17 +195,17 @@ the interaction with db is the same as long lists. However short list sould be a
 
 
 TODO
-set in config the max lenght of short list, for now it is up to programmer decission
+set in config the max length of short list, for now it is up to programmer decission
 
 
 
 
 
 ### Reference and Reference Factory
-this is object refering to primary object. 
+this is object referring to primary object. 
 reference can be as simple as {KEY:true} creating a simple list of references (perhaps stored by timestamp priority)
 but it can contain denormalized parts from primary object, or other informative objects like counters.
-Reference object can't be refered again by another reference.
+Reference object can't be referred again by another reference.
 
 Reference is a pointer to another location in DB.
 it could be as value, but the faster and better way is store them as key and value as simple as true or another descriptive object with
@@ -232,7 +232,7 @@ this contains additional information in the reference object, usually unique rel
 
 #### update
 set the flag to live and all assignments like `object.item = value` will be propagated to firebase, and the event `update` will be triggered
-the same will apply otjer way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
+the same will apply other way around. if the prop is set with flag `live` the update on firebase will trigger the update inside the object
 it will update the value and trigger the event `new_content`
 better:
 two flags
@@ -253,7 +253,7 @@ if no arguments provided it create as well a brand new object from blueprint and
 If instance of a Model is provided it will be assigned the generated ID and can be saved into list.
 
 ##### List.page
-Paginator object, containing the [size] lodaed records 
+Paginator object, containing the [size] loaded records 
 
 	.set(size, first)
 	.next();
@@ -261,14 +261,14 @@ Paginator object, containing the [size] lodaed records
 
 
 #### ModelFactory.addAction
-Actions simpulates the relationship to other models
+Actions simulates the relationship to other models
 e.g. 
 UserA has friends UseB to F 
 When user A posts a message in chat program, the message or the reference to that message should be pushed to UserB to F specific location
 for example messages/{UserX}/userA/message.json
 this action is desired to have automated and the client does not need to wait for the result either positive or negative or mixed.
 
-it is a factory method which decorates Models' write method to accomodate the action requirements
+it is a factory method which decorates Models' write method to accommodate the action requirements
 
 1.) addActionMethod
 2.) decorates write method
@@ -289,7 +289,7 @@ it is a factory method which decorates Models' write method to accomodate the ac
 		}
 	]};
 
-first afgument is name of the 'class'
+first argument is name of the 'class'
 second argument is construct saying it is object (not a list) and defines all the properties of the object
 
 	var user = BpFactore.create('app.user', bprint);
@@ -303,12 +303,12 @@ set objects' property
 	user.name = name;
 
 
-set deep nested onjects' property
+set deep nested objects' property
 
 	user.info.gender = "male" sets gender
 
 
-write deep nested obbjects' property into DB
+write deep nested objects' property into DB
 
 	user.info.gender.write();
 
@@ -316,7 +316,7 @@ write deep nested obbjects' property into DB
 rule: the parent location must be already in DB otherwise is thrown error - can't write to non existent location
 
 
-write whole nested object in DB at once (overwite all inner properies). Assuming object 'user' is already defined on DB. otherwise the db is very likely throw an error of non existent location.
+write whole nested object in DB at once (overwrite all inner properties). Assuming object 'user' is already defined on DB. otherwise the db is very likely throw an error of non existent location.
 
 	user.info.write();
 
@@ -326,18 +326,6 @@ write the whole object into DB which overwrites all the inner properties or obje
 	user.write();
 
 
-TODO thik about events once the write / read / update etc operations are finished and new data available in the model.
-example:
-	
-	user.info.write();
-	user.info.writeDone(cb);
-	user.info.writeFail(cb);
-	or
-	user.info.on('write_success', cb);
-	or
-	user.info.on('write', cb_success, cb_error);
-	or
-	user.info.written(function(success){}); // success true / false
 
 
 
@@ -363,6 +351,18 @@ Do we set the ref on new object from factory and that will trigger interal updat
 it is possible and vital for a model to contain a list (not endless) 
 e.g. - a game contains a limitted amoutn of players
 
+#### about events once the write / read / update etc operations are finished and new data available in the model.
+example:
+	
+	user.info.write();
+	user.info.writeDone(cb);
+	user.info.writeFail(cb);
+	or
+	user.info.on('write_success', cb);
+	or
+	user.info.on('write', cb_success, cb_error);
+	or
+	user.info.written(function(success){}); // success true / false
 
 ## long term TODO
 
