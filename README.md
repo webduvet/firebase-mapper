@@ -1,6 +1,8 @@
 # firebase-mapper
 ![Build Status](https://travis-ci.org/webduvet/firebase-mapper.svg?branch=master)
 
+Development version
+
 
 Simple data mapper for firebase. Encapsulate the Firebase reference and the data model stored under the reference. firebase-mapper as well
 can handle the objects containing primary lists and lists from reference objects pointing to other databaswe locations.
@@ -52,7 +54,7 @@ via npm
 
 	npm install firebase-mapper
 
-	var FM = require('firebase-mapper');
+	var Fm = require('firebase-mapper');
 
 
 ## API 
@@ -156,7 +158,17 @@ remove object by id from list and DB
 
 sets priority for the item in the list
 
-	.setPriority(id, priority)
+	.setPriority(id, priority) // TODO
+
+#### ShortList
+is the list which contains small number references or Models and all can be loaded in memory
+e.g. refrences in shopping cart
+Short list does everything what LongList does but extends the Object by the reference key. So it can be saved aspart of the parent model.
+
+#### LongList
+is the proper list where the number of items is limited only by hardware limitations. The items in the list can be loaded only via paginator
+and are not part of the own properties of the list object as short list. 
+If a model contains a long list (which is not recomended) the model can't be saved using save method. doing so would erase the list content.
 
 ##### Events
 
@@ -338,6 +350,9 @@ example:
 we have no concept of relations - mainly to have references and denormalization
 the only notiion right now is to decorate the create method owith something
 relation should be created on create and propagated to DB on write
+
+#### make a safeSave which will iterate through own properties and save the on e by one
+in case the onject contains a long list
 
 #### identify object
 how do we know that the object in DB has the same structure? It is not guaranteed - all we have is a factory and blueprint so we know what we expect
