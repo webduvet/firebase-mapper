@@ -11,6 +11,10 @@
 		"type": "git",
 		"url": "git://github.com/webduvet/firebase-mapper.git"
 	},
+	"ignore": {
+		"node_modules",
+		"package.json"
+	},
 	"dependencies" : {
 		"firebase": "~latest"
 	}
