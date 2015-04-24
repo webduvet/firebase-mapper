@@ -1,6 +1,6 @@
 {
   "name": "firebase-mapper",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Model representation of Firebase object",
   "main": "dist/firebase-mapper.js",
   "files": [
