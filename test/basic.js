@@ -26,20 +26,16 @@ var testBP = {
 		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
-			factory: {
-				fclass: Fm.ReferenceFactory,
-				mclass: Fm.Reference,
-				blueprint: 'true'
-			},
+			fclass: Fm.ReferenceFactory,
+			mclass: Fm.Reference,
+			blueprint: 'true',
 			type: "simple",
 			keyType: "unique" 
 		}],
 		prop3: ["longlist", {
-			factory: {
-				fclass: Fm.ReferenceFactory,
-				mclass: Fm.Reference,
-				blueprint: {s1: "test", s2: null}
-			},
+			fclass: Fm.ReferenceFactory,
+			mclass: Fm.Reference,
+			blueprint: {s1: "test", s2: null},
 			type: "rich",
 			keyType: "unique" 
 		}]
@@ -49,11 +45,9 @@ var testBP = {
 		prop2: ["shortlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
-			factory: {
-				fclass: Fm.ReferenceFactory,
-				mclass: Fm.Reference,
-				blueprint: 'true'
-			},
+			fclass: Fm.ReferenceFactory,
+			mclass: Fm.Reference,
+			blueprint: 'true',
 			type: "simple",
 			keyType: "unique" 
 		}]
@@ -67,7 +61,7 @@ module.exports = {
 		},
 		'all in place': function(test) {
 			test.expect(9);
-			test.equals(typeof Fm, 'object', 'expect object got: ', typeof Fm);
+			test.equals(typeof Fm, 'function', 'expect object got: ', typeof Fm);
 			test.equals(typeof Fm.Model, 'function', 'expect typeof function and got', typeof Fm.Model);
 			test.equals(typeof Fm.ModelFactory, 'function', 'expect typeof function and got', typeof Fm.ModelFactory);
 			test.equals(typeof Fm.List, 'function', 'expect typeof function and got', typeof Fm.List);

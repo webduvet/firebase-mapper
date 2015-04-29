@@ -28,20 +28,16 @@ var testBP = {
 		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
-			factory: {
-				fclass: Fm.ReferenceFactory,
-				mclass: Fm.Reference,
-				blueprint: 'true'
-			},
+			fclass: Fm.ReferenceFactory,
+			mclass: Fm.Reference,
+			blueprint: 'true',
 			type: "simple",
 			keyType: "unique" 
 		}],
 		prop3: ["longlist", {
-			factory: {
-				fclass: Fm.ReferenceFactory,
-				mclass: Fm.Reference,
-				blueprint: {s1: "test", s2: null}
-			},
+			fclass: Fm.ReferenceFactory,
+			mclass: Fm.Reference,
+			blueprint: {s1: "test", s2: null},
 			type: "rich",
 			keyType: "unique" 
 		}]
@@ -79,11 +75,9 @@ module.exports = {
 			};
 
 			var imgListBp = ["longlist",{
-				factory:{
-					fclass: Fm.ModelFactory,
-					mclass: Fm.Model,
-					blueprint: imgBlueprint
-				}
+				fclass: Fm.ModelFactory,
+				mclass: Fm.Model,
+				blueprint: imgBlueprint
 			}];
 
 			// gallery blueprint
@@ -91,18 +85,14 @@ module.exports = {
 				title: null,
 				owner: null,
 				pictures: ["shortlist", {
-					factory:{
-						fclass: Fm.ReferenceFactory,
-						mclass: Fm.Reference,
-						blueprint: 'true'
-					}
+					fclass: Fm.ReferenceFactory,
+					mclass: Fm.Reference,
+					blueprint: 'true'
 				}],
 				audience: ["shortlist", {
-					factory:{
-						fclass: Fm.ReferenceFactory,
-						mclass: Fm.Reference,
-						blueprint: 'true'
-					}
+					fclass: Fm.ReferenceFactory,
+					mclass: Fm.Reference,
+					blueprint: 'true'
 				}]
 			};
 
@@ -114,11 +104,9 @@ module.exports = {
 			};
 
 			var notificationList = ["longlist",{
-				factory:{
-					fclass: Fm.ModelFactory,
-					mclass: Fm.Model,
-					blueprint: notiBlueprint
-				}
+				fclass: Fm.ModelFactory,
+				mclass: Fm.Model,
+				blueprint: notiBlueprint
 			}];
 
 			// TODO notification list needs to push new notifications to location /notifications/userid/notificationAutoId
