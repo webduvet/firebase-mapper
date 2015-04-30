@@ -20,7 +20,8 @@
   },
   "scripts": {
     "test": "grunt test",
-	"unit": "nodeunit test"
+	"unit": "nodeunit test",
+	"env": "env"
   },
   "repository": {
     "type": "git",
