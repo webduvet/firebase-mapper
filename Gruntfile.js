@@ -38,9 +38,15 @@ module.exports = function(grunt) {
 			files: ['src/*.js'],
 			tasks: ['jshint']
 		},
+		/*
 		nodeunit:
 		{
 			files: ['test/*.js']
+		},
+		*/
+		nodeunit:
+		{
+			files: ['test/basic.js']
 		},
 		yuidoc:
 		{

@@ -54,11 +54,23 @@ var testBP = {
 	}
 };
 
+var testCount = 8;
+
 module.exports = {
 	'test basic': {
-		'setUp': function(done) {
-			done();
+		'setUp': function(next) {
+			next();
 		},
+		'tearDown': function(next){
+			testCount--;
+			if (testCount === 0) {
+				console.log('must finish now')
+				next();
+				this.ref = null;
+			} else {
+				next();
+			}
+		}, 
 		'all in place': function(test) {
 			test.expect(9);
 			test.equals(typeof Fm, 'function', 'expect object got: ', typeof Fm);
@@ -99,6 +111,16 @@ module.exports = {
 			//this.ref.set(null, function(err){
 			//});
 		},
+		'tearDown': function(next){
+			testCount--;
+			if (testCount === 0) {
+				console.log('musdt finish now')
+				next();
+				this.ref = null;
+			} else {
+				next();
+			}
+		}, 
 		'simple': function (test) {
 			test.expect(4);
 			var model = new Fm.Model(this.ref.child('simple'), testBP.simple);
@@ -193,7 +215,7 @@ module.exports = {
 			m.prop2.add('testref3');
 			m.prop2.add('testref4');
 
-			m.save();
+			//m.save();
 
 			test.done();
 		}
