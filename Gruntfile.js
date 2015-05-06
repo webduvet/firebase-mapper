@@ -9,7 +9,7 @@ module.exports = function(grunt) {
 			},
 			build:
 			{
-				src:['lib/fm.js', 'lib/static.js', 'lib/basic.js', 'lib/model*.js', 'lib/list*.js','lib/shortlist.js' , 'lib/reference*.js', 'lib/exception*.js', 'lib/provider*.js'],
+				src:['src/fm.js', 'src/static.js', 'src/basic.js', 'src/model*.js', 'src/list*.js','src/shortlist.js' , 'src/reference*.js', 'src/exception*.js', 'src/provider*.js'],
 				dest:"build/<%= pkg.name %>.js"
 			}
 		},
@@ -31,11 +31,11 @@ module.exports = function(grunt) {
 			options:{
 				laxcomma: true
 			},
-			src:['lib/*.js']
+			src:['src/*.js']
 		},
 		watch:
 		{
-			files: ['lib/*.js'],
+			files: ['src/*.js'],
 			tasks: ['jshint']
 		},
 		nodeunit:
