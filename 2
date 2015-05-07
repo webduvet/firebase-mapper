@@ -1,10 +1,8 @@
-
 process.on('uncaugthException', function(err){
 	console.error(err.stack);
 });
 
 var Firebase = require('firebase');
-var exit = require('exit');
 //var Fm = require('../build/firebase-mapper.js')(Firebase);
 var Fm = require('../build/firebase-mapper');
 
@@ -69,7 +67,6 @@ module.exports = {
 
 				console.log('must finish now')
 				next();
-
 				this.ref = null;
 			} else {
 				next();
@@ -111,17 +108,22 @@ module.exports = {
 	'test Model': {
 		'setUp': function(done) {
 			this.ref = new Firebase('http://sagavera.firebaseio.com/modeltest');
-			done();
+				done();
+			//this.ref.set(null, function(err){
+			//});
 		},
 		'tearDown': function(next){
 			testCount--;
 			if (testCount === 0) {
+				console.log('this', this);
 				next();
+				this.ref = null;
 			} else {
 				next();
 			}
 		}, 
 		'simple': function (test) {
+				console.log('this', this.async, this);
 			test.expect(4);
 			var model = new Fm.Model(this.ref.child('simple'), testBP.simple);
 
