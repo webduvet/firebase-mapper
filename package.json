@@ -22,7 +22,7 @@
   },
   "scripts": {
     "test": "grunt test",
-    "nodeunit": "node scripts/test.js",
+    "unit": "node scripts/test.js",
     "env": "env"
   },
   "repository": {

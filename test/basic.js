@@ -67,7 +67,6 @@ module.exports = {
 			testCount--;
 			if (testCount === 0) {
 
-				console.log('must finish now')
 				next();
 
 				this.ref = null;
@@ -77,12 +76,12 @@ module.exports = {
 		}, 
 		'all in place': function(test) {
 			test.expect(9);
-			test.equals(typeof Fm, 'function', 'expect object got: ', typeof Fm);
-			test.equals(typeof Fm.Model, 'function', 'expect typeof function and got', typeof Fm.Model);
-			test.equals(typeof Fm.ModelFactory, 'function', 'expect typeof function and got', typeof Fm.ModelFactory);
-			test.equals(typeof Fm.List, 'function', 'expect typeof function and got', typeof Fm.List);
+			test.equals(typeof Fm, 'function', 'expect function got: '+ typeof Fm);
+			test.equals(typeof Fm.Model, 'function', 'expect typeof function and got'+ typeof Fm.Model);
+			test.equals(typeof Fm.ModelFactory, 'function', 'expect typeof function and got'+ typeof Fm.ModelFactory);
+			test.equals(typeof Fm.List, 'function', 'expect typeof function and got'+ typeof Fm.List);
 			test.equals(typeof Fm.Reference, 'function', 'expect typeof function and got', typeof Fm.Reference);
-			test.equals(typeof Fm.ReferenceFactory, 'function', 'expect typeof function and got', typeof Fm.ReferenceFactory);
+			test.equals(typeof Fm.ReferenceFactory, 'function', 'expect typeof function and got'+ typeof Fm.ReferenceFactory);
 			test.ok(Fm.Model.prototype instanceof Fm.Basic, 'Fm.Model is expected to inherit from Fm.Basic');
 			test.ok(Fm.Reference.prototype instanceof Fm.Basic, 'Fm.Reference is expected to inherit from Fm.Basic');
 			test.ok(Fm.ReferenceFactory.prototype instanceof Fm.ModelFactory, 'Fm.Reference is expected to inherit from Fm.Basic');
