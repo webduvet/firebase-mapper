@@ -129,9 +129,9 @@ Fm.Reference.prototype.save = function(str){
  */
 Fm.ReferenceFactory = function(ref, blueprint, ReferenceModel) {
 	if (typeof blueprint !== 'object'){
-		Fm.ModelFactory.apply(this, arguments);
+		Fm.ModelFactory.call(this, ref, blueprint, Fm.Reference);
 	} else {
-		Fm.ModelFactory.apply(this, arguments);
+		Fm.ModelFactory.call(this, ref, blueprint, Fm.Reference);
 	}
 };
 

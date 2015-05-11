@@ -163,6 +163,8 @@ module.exports = {
 			test.ok(m.prop2 instanceof Fm.List, 'expect instance of List');
 			test.ok(m.prop3 instanceof Fm.List, 'expect instance of List');
 
+			// adding a reference model and then save it - even with true value, genious....
+			// we could perhsaps be able to extend this ref to rich ??? I mean before saving...
 			m.prop2.add('testref1').save();
 			m.prop2.add('testref2').save();
 			m.prop2.add('testref3').save();
