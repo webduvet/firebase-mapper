@@ -11,6 +11,12 @@
  * or should it be considered as a conrete part of a list
  * in that case it should be paginator there.
  *
+ * sample config: {
+ * 		modelType: ['MODEL', 'REF'],
+ * 		autoid: [true, false],
+ * 		blueprint: {//blueprint }
+ * }
+ *
  * another point is - saving a list of references - it can be part of a object
  * e.g. game user and the finit list of qualities or powers
  *
@@ -21,8 +27,13 @@
  */
 Fm.List = function(ref, config) {
 
+	// test if ref is valid instance of Firebase TODO go around the fact we do not know Firebase here
 	if (!ref && ref.toString().match(/^https/)) throw new Error('no or invalid reference provided');
-	if (!config || (!config.factory && !( config.mclass && config.fclass ) ) ) throw new Error("no valid config object found");
+
+	// TODO mclass, fclass - get rid of this
+	// we can  only have either model or reference here. it should be pointed out in config object
+	// all extended objects with application logic should wrap this and use own factories and services
+	if (!config) throw new Error("no valid config object found");
 
 
 	// TODO create Fm.Model plain instance on push
@@ -61,15 +72,21 @@ Fm.List = function(ref, config) {
 		}
 	});
 
-	//instantiate factory
-	if (config.factory instanceof Fm.ModelFactory || config.factory instanceof Fm.ReferenceFactory ) {
-		this.factory = config.factory;
+
+	if (config.modelType === 'ref' || config.modelType === 'reference') {
+		// setup the factory for all references for this list
+		console.log('calling reference factory');
+		this.factory = new Fm.ReferenceFactory(ref, config.blueprint);
+	} else if (!config.modelType || config.modelType === 'model') {
+		// setup the factory for all objects for this list
+		this.factory = new Fm.ModelFactory(ref, config.blueprint);
 	} else {
-		// TODO we need Basic Factory or completly rename everything so Model is the base class
-		this.factory = new config.fclass(ref, config.blueprint, config.mclass);
-		this.blueprint = config.blueprint;
+		throw new Error("Unsupported modelType", config.modelType);
 	}
 
+
+	// TODO resolve this - ref is clearly a singleton as the Fm should be as it is regarding one database
+	// we have Fm as static - this is not good...
 	// set priority listener by default
 	ref.on('child_moved', function(){
 		this._trigger('child_moved');
@@ -80,7 +97,7 @@ Fm.List = function(ref, config) {
 	if ( !config.autoid ) {
 		this.push = function(key, writeFlag) {
 			if (!key) throw new Error('List is set to autoID: false, expects parameter in push');
-			return this.pushUnder.call(this, key, writeFlag);
+			return this.add.call(this, key, writeFlag);
 		};
 	}
 
@@ -141,8 +158,12 @@ Fm.List.prototype.pushUnder = function(key, write){
 
 
 // TODO merge this method with push
-// push and add are only DB methods !!!!
+// so far the solution is decorate .prototype.push on each instance
+// add of simple reference should not trigger any factory. it should just add it to DB
+// perhaps it should cache it locally and than upon save it should propagate into DB.
 Fm.List.prototype.add = function(id, writeflag) {
+
+	console.log('adding ', id);
 
 	var wf = writeflag || false,
 		obj = this.factory.create(id);
@@ -179,7 +200,6 @@ Fm.List.prototype.get = function(key){
 	var m = this.factory.create( this.__ref.child(key) );
 
 	// emit event "ready" or "loaded"
-	
 	m.load();
 
 	return m;

@@ -19,15 +19,17 @@ Fm.Model = function(ref, blueprint){
 
 	defineProperties(this);
 
-    Object.defineProperty(this, '_watchedLocal', {
-    });
 
-
+	// iterate over blueprint keys
     for ( var key in blueprint ) {
 		setKey.call(this, key, blueprint);
     }
 
+	/**
+	 * set Key depending on type
+	 */
 	function setKey(key, bp){
+		// extract (default) value from the key
 		var _value = bp[key];
 		// we have a list so make the property not enumerable
 		if ( Array.isArray( bp[key] ) ) {
@@ -37,7 +39,7 @@ Fm.Model = function(ref, blueprint){
 					enumerable: false,
 					configurable: true,
 					writable: true,
-					value: setList(bp[key][1], key)
+					value: setLongList(bp[key][1], key)
 				});
 			} else if(bp[key][0] === 'shortlist') {
 				// we can expose the list to save method
@@ -48,49 +50,55 @@ Fm.Model = function(ref, blueprint){
 		} else if ( typeof bp[key] === 'object' && bp[key] !== null ){
 			this[key] = new Fm.Model(this.__ref.child(key), bp[key]);
 		} else {
-			Object.defineProperty(this, key, {
-				enumerable: true,
-				configurable: true,
-				get: function() {
-					return _value;
-				},
-				set: function(val){
-					// TODO this should not write of the val is set from watchRemote handler
-					if (_value !== val && this.__watchedLocal.indexOf(key) >= 0) {
-						_value = val;
-						this.__localBuffer.push(_value);
-						this.__trigger('sent', key);
-						this.__ref.child(key)
-							.set(val, function(err){
-								if (err) this.__trigger('error');
-								else {
-									this.__trigger('delivered', key);
-									// if we do not have watchRemote set on this property
-									// we want to shift the buffer here;
-									if (this.__localBuffer[0] === _value ) this.__localBuffer.shift();
-									else this.__trigger('error',"this should not happen");
-								}
-							}.bind(this) );
-					} else if (_value !== val) {
-						// need set watcher on most nested object
-						// watching object will not fire any event as the reference is not changing
-						// TODO solution - set observer on object would set observers on all primitives in object tree
-						// not on array / list
-						if (typeof val === 'object' && val !== null) {
-							_value = new Fm.Model(this.__ref.child(key), val);
-						} else {
-							_value = val;
-							// this would apply of we save to db by default
-							//this._ref.child(key).set(_value);
-						}
-					}
-
-				}
-			});
-			//console.log("setting", key, _value);
-			this[key] = _value;
-			//console.log(this[key]);
+			defineKey.call(this, key, _value);
 		}
+	}
+
+	/**
+	 * define Key if the value is primitive
+	 */
+	function defineKey(key_, value_){
+		Object.defineProperty(this, key_, {
+			enumerable: true,
+			configurable: true,
+			get: function() {
+				return value_;
+			},
+			set: function(val){
+				// TODO this should not write of the val is set from watchRemote handler
+				if (value_ !== val && this.__watchedLocal.indexOf(key_) >= 0) {
+					value_ = val;
+					this.__localBuffer.push(value_);
+					this.__trigger('sent', key_);
+					this.__ref.child(key_)
+						.set(val, function(err){
+							if (err) this.__trigger('error');
+							else {
+								this.__trigger('delivered', key_);
+								// if we do not have watchRemote set on this property
+								// we want to shift the buffer here;
+								if (this.__localBuffer[0] === value_ ) this.__localBuffer.shift();
+								else this.__trigger('error',"this should not happen");
+							}
+						}.bind(this) );
+				} else if (value_ !== val) {
+					// need set watcher on most nested object
+					// watching object will not fire any event as the reference is not changing
+					// TODO solution - set observer on object would set observers on all primitives in object tree
+					// not on array / list
+					if (typeof val === 'object' && val !== null) {
+						value_ = new Fm.Model(this.__ref.child(key_), val);
+					} else {
+						value_ = val;
+						// this would apply of we save to db by default
+						//this._ref.child(key_).set(value_);
+					}
+				}
+
+			}
+		});
+		// this is not necessary as we already have the value_ in closure
+		// this[key_] = value_;
 	}
 
 	/**
@@ -101,19 +109,20 @@ Fm.Model = function(ref, blueprint){
 	 *
 	 * @return {Fm.List} new instance
 	 */
-	function setList(bp, key) {
+	function setLongList(bp, key) {
         // TODO setup list
         // check if already a list
 
         if ( bp instanceof Fm.List ) {
             return bp;
         } else {
-			// TODO make nicer catcher of wrong data cinsidering the class type etc.
-			if (!bp.factory && (!bp.fclass && !bp.mclass) ) throw new Error('invalid factory config');
-
 			// TODO decide how to create list...
-			//console.log(key);
-            return new Fm.List(ref.child(key), bp );
+            try {
+				return new Fm.List(ref.child(key), bp );
+			} catch(e) {
+				console.log(e);
+				throw e;
+			}
         }
     }
 
@@ -124,11 +133,6 @@ Fm.Model = function(ref, blueprint){
         if ( bp instanceof Fm.List ) {
             return bp;
         } else {
-			// TODO make nicer catcher of wrong data cinsidering the class type etc.
-			if (!bp.factory && !bp.fclass && !bp.mclass) throw new Error('invalid factory config');
-
-			// TODO decide how to create list...
-			// console.log(key);
             return new Fm.ShortList(ref.child(key), bp );
         }
     }

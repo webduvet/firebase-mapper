@@ -28,15 +28,13 @@ var testBP = {
 		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
-			fclass: Fm.ReferenceFactory,
-			mclass: Fm.Reference,
 			blueprint: 'true',
+			modelType: 'ref',
 			type: "simple",
 			keyType: "unique" 
 		}],
 		prop3: ["longlist", {
-			fclass: Fm.ReferenceFactory,
-			mclass: Fm.Reference,
+			modelType: 'ref',
 			blueprint: {s1: "test", s2: null},
 			type: "rich",
 			keyType: "unique" 
@@ -47,8 +45,7 @@ var testBP = {
 		prop2: ["shortlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
-			fclass: Fm.ReferenceFactory,
-			mclass: Fm.Reference,
+			modelType: 'ref',
 			blueprint: 'true',
 			type: "simple",
 			keyType: "unique" 
@@ -56,7 +53,6 @@ var testBP = {
 	}
 };
 
-var testCount = 8;
 
 module.exports = {
 	'test basic': {
@@ -64,15 +60,7 @@ module.exports = {
 			next();
 		},
 		'tearDown': function(next){
-			testCount--;
-			if (testCount === 0) {
-
-				next();
-
-				this.ref = null;
-			} else {
-				next();
-			}
+			next();
 		}, 
 		'all in place': function(test) {
 			test.expect(9);
@@ -113,12 +101,7 @@ module.exports = {
 			done();
 		},
 		'tearDown': function(next){
-			testCount--;
-			if (testCount === 0) {
-				next();
-			} else {
-				next();
-			}
+			next();
 		}, 
 		'simple': function (test) {
 			test.expect(4);
@@ -173,6 +156,7 @@ module.exports = {
 
 			var m = new Fm.Model(this.ref.child('nestedReferenceList'), testBP.nestedReferenceList);
 
+
 			test.ok( m.prop2 instanceof Fm.List, "Expect instance of a Fm.List" );
 			test.ok( m.prop2.factory instanceof Fm.ReferenceFactory, "factory in list is expected to be instance of ReferenceFactory");
 			test.ok( m.prop2.factory instanceof Fm.ModelFactory, "factory in list is expected to be instance of ModelFactory");
@@ -183,6 +167,7 @@ module.exports = {
 			m.prop2.add('testref2').save();
 			m.prop2.add('testref3').save();
 			m.prop2.add('testref4').save();
+
 
 			var rf = m.prop3.add('rich1');
 			rf.s1 = "asd";
