@@ -163,7 +163,7 @@ module.exports = {
 			myGal.pictures.add("pic2");
 			myGal.pictures.add("pic3");
 
-			myGal.save();
+			// myGal.save();
 
 
 			myGal.addPicture("pic88");
