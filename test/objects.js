@@ -28,16 +28,14 @@ var testBP = {
 		prop2: ["longlist", {
 			// no need to create ref to path as the path is given by Model - property
 			// either factory config or factory itself
-			fclass: Fm.ReferenceFactory,
-			mclass: Fm.Reference,
 			blueprint: 'true',
 			type: "simple",
+			modelType: 'ref',
 			keyType: "unique" 
 		}],
 		prop3: ["longlist", {
-			fclass: Fm.ReferenceFactory,
-			mclass: Fm.Reference,
 			blueprint: {s1: "test", s2: null},
+			modelType: 'ref',
 			type: "rich",
 			keyType: "unique" 
 		}]
@@ -75,8 +73,7 @@ module.exports = {
 			};
 
 			var imgListBp = ["longlist",{
-				fclass: Fm.ModelFactory,
-				mclass: Fm.Model,
+				modelType: 'model',
 				blueprint: imgBlueprint
 			}];
 
@@ -85,13 +82,11 @@ module.exports = {
 				title: null,
 				owner: null,
 				pictures: ["shortlist", {
-					fclass: Fm.ReferenceFactory,
-					mclass: Fm.Reference,
+					modelType: 'ref',
 					blueprint: 'true'
 				}],
 				audience: ["shortlist", {
-					fclass: Fm.ReferenceFactory,
-					mclass: Fm.Reference,
+					modelType: 'ref',
 					blueprint: 'true'
 				}]
 			};
@@ -104,8 +99,7 @@ module.exports = {
 			};
 
 			var notificationList = ["longlist",{
-				fclass: Fm.ModelFactory,
-				mclass: Fm.Model,
+				modelType: 'model',
 				blueprint: notiBlueprint
 			}];
 
