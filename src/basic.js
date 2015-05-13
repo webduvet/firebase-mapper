@@ -114,7 +114,7 @@ Fm.Basic.prototype.off = function(event, handler){
 	// no event specified 
 	if (!event || typeof event === 'function') {
 		if (!event) {
-			this.events = {}
+			this.events = {};
 			return this;
 		} else {
 		   throw new Error('provided handler without event identifier');
@@ -144,17 +144,22 @@ Fm.Basic.prototype.off = function(event, handler){
  * @access private
  */
 Fm.Basic.prototype.__trigger = function(event, prop){
-	if(!this.__events[event] || !this.__once[event]) return;
-	this.__events[event].forEach(function(ev){
-		// TODO can we explicitly giv this as context ?
-		ev.call(this, prop);
-	}.bind(this));
-	this.__once[event].forEach(function(ev, index){
-		// TODO can we explicitly giv this as context ?
-		ev.call(this, prop);
-	}.bind(this));
-	// remove all handlers at once
-	this.__once[event] = [];
+
+	if (this.__events[event]) {
+		this.__events[event].forEach(function(ev){
+			// TODO can we explicitly giv this as context ?
+			ev.call(this, prop);
+		}.bind(this));
+	}
+
+	if (this.__once[event]) {
+		this.__once[event].forEach(function(ev, index){
+			// TODO can we explicitly giv this as context ?
+			ev.call(this, prop);
+		}.bind(this));
+		// remove all handlers at once
+		this.__once[event] = [];
+	}
 };
 
 

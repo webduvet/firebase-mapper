@@ -56,11 +56,12 @@ var testBP = {
 
 module.exports = {
 	'test basic': {
-		'setUp': function(next) {
-			next();
+		'setUp': function(done) {
+			this.fb = new Firebase('http://sagavera.firebaseio.com/basicTest');
+			done();
 		},
-		'tearDown': function(next){
-			next();
+		'tearDown': function(done){
+			done();
 		}, 
 		'all in place': function(test) {
 			test.expect(9);
@@ -93,6 +94,20 @@ module.exports = {
 			});
 			test.ok(ts1 < provider.priority < Date.now(), 'expect unix timestamp');
 			test.done();
+		},
+		"events handling": function(test){
+			test.expect(1);
+			var model = new Fm.Model(this.fb.child('events'), testBP.simple);
+
+			model.on('saved', function(){
+				test.ok(true, "expect to run this line");
+				test.done();
+			});
+
+			//model.watchLocal('prop1');
+
+			model.prop1 = "newValue" + Date.now();
+			model.save();
 		}
 	},
 	'test Model': {
@@ -100,8 +115,8 @@ module.exports = {
 			this.ref = new Firebase('http://sagavera.firebaseio.com/modeltest');
 			done();
 		},
-		'tearDown': function(next){
-			next();
+		'tearDown': function(done){
+			done();
 		}, 
 		'simple': function (test) {
 			test.expect(4);

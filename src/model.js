@@ -181,7 +181,6 @@ Fm.Model.prototype.constructor = Fm.Model;
  * @access public
  */
 Fm.Model.prototype.save = function(){
-	console.log(this);
 	this.__ref.set(this, function(err){
 		if(err) this.__trigger("error");
 		else this.__trigger('saved');
