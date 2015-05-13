@@ -27,6 +27,12 @@ Fm.Basic = function(ref){
 			configurable: true,
 			value: {}
 		},
+		"__once": {
+			enumerable: false,
+			writable: true,
+			configurable: true,
+			value: {}
+		},
 		/**
 		 * @access private
 		 * @var {string} relative DB reference stored in factory
@@ -72,12 +78,30 @@ Fm.Basic.prototype.on = function(event, handler){
 		this.__events[event] = [];
 	}
 	this.__events[event].push(handler);
+	return this;
+};
+
+/**
+ * the same as on but handler is invoked only once
+ *
+ * @param {string} event identifier
+ * @param {function} event handler
+ *
+ * @returns {object} self, si it can be chained
+ */
+Fm.Basic.prototype.once = function(event, handler) {
+
+	if (!this.__once[event]) {
+		this.__once[event] = [];
+	}
+	this.__once[event].push(handler);
+	return this;
 };
 
 /**
  * Removes all occurances of handler from event queue
- * TODO
  * if event is not specified it will remove all queues for all events
+ * if handler is not specified will remove all handlers for specified event
  * <ul>events
  * <li>saved
  * <li>error
@@ -87,10 +111,30 @@ Fm.Basic.prototype.on = function(event, handler){
  * @return this
  */
 Fm.Basic.prototype.off = function(event, handler){
-	if (!this.__events[event]) return;
+	// no event specified 
+	if (!event || typeof event === 'function') {
+		if (!event) {
+			this.events = {}
+			return this;
+		} else {
+		   throw new Error('provided handler without event identifier');
+		}
+	}
+	// no event found
+	if (!this.__events[event]) {
+		return this;
+	}
+	// event found not handler specified, remove all handlers
+	if (!handler) {
+		this.__events[event] = [];
+		return this;
+	}
+
+	// event found and handler specified
 	this.__events[event].forEach(function(el, index){
-		this.__events[event].splice(index,1);
+		if (el === handler) this.__events[event].splice(index,1);
 	}.bind(this));
+	return this;
 };
 
 /**
@@ -100,11 +144,17 @@ Fm.Basic.prototype.off = function(event, handler){
  * @access private
  */
 Fm.Basic.prototype.__trigger = function(event, prop){
-	if(!this.__events[event]) return;
+	if(!this.__events[event] || !this.__once[event]) return;
 	this.__events[event].forEach(function(ev){
 		// TODO can we explicitly giv this as context ?
 		ev.call(this, prop);
 	}.bind(this));
+	this.__once[event].forEach(function(ev, index){
+		// TODO can we explicitly giv this as context ?
+		ev.call(this, prop);
+	}.bind(this));
+	// remove all handlers at once
+	this.__once[event] = [];
 };
 
 
