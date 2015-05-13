@@ -87,7 +87,9 @@ module.exports = {
 				}],
 				audience: ["shortlist", {
 					modelType: 'ref',
-					blueprint: 'true'
+					blueprint: {
+						name: 'some name'
+					}
 				}]
 			};
 
@@ -134,7 +136,7 @@ module.exports = {
 				for (var key in this.audience) {
 					if(this.audience.hasOwnProperty(key)) {
 						var notification = notifications.pushUnder(key);
-						notification.itemid = "todo this id";
+						notification.itemid = "todo this id";  // TODO should have something like this.key(), getting own key
 						notification.msg = msg;
 						notification.save();
 					}
@@ -146,21 +148,27 @@ module.exports = {
 
 			var myGal = galleryFactory.create();
 
+			test.ok(myGal.audience instanceof Fm.List, "expect audience to be a Fm.List");
 			myGal.title = "some title";
 			myGal.owner = "get_curent_User_ID";
+
 			// TODO add an array of references, we can do as well save_add -which will check all the refs
-			myGal.audience.add("user1");
-			myGal.audience.add("user2");
+			// TODO addByRef(referencedObject) it automatically takes all required fields from referenced object according blueprint (if more than true)
+			// TODO if add does not have second param it is reference with true
+			// if it does it can be object or rich reference - that should be the second param.
+			// myGal.audience.add("user1", {name: "testname", age: 'testAGE'});
+			myGal.audience.add('user1').name = "some nome";
 			myGal.audience.add("user3");
 			myGal.audience.add("user4");
 			myGal.pictures.add("pic1");
 			myGal.pictures.add("pic2");
 			myGal.pictures.add("pic3");
 
-			// myGal.save();
+			myGal.save();
 
 
-			myGal.addPicture("pic88");
+			// myGal.addPicture("pic88");
+
 
 
 			test.done();
