@@ -94,12 +94,19 @@ Fm.List = function(ref, config) {
 
 
 	// if no autoID then we need to use push under TODO it's ko to do it in prototype
+	/*
 	if ( !config.autoid ) {
-		this.push = function(key, writeFlag) {
-			if (!key) throw new Error('List is set to autoID: false, expects parameter in push');
-			return this.add.call(this, key, writeFlag);
-		};
+		Object.defineProperty(this, 'push', {
+			enumerable: false,
+			writable: false,
+			configurable: false,
+			value: function(key, writeFlag) {
+				if (!key) throw new Error('List is set to autoID: false, expects parameter in push');
+				return this.add.call(this, key, writeFlag);
+			}
+		});
 	}
+	*/
 
 	/**
 	 * non enumerable property page
@@ -162,8 +169,6 @@ Fm.List.prototype.pushUnder = function(key, write){
 // add of simple reference should not trigger any factory. it should just add it to DB
 // perhaps it should cache it locally and than upon save it should propagate into DB.
 Fm.List.prototype.add = function(id, writeflag) {
-
-	console.log('adding ', id);
 
 	var wf = writeflag || false,
 		obj = this.factory.create(id);
