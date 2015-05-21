@@ -120,7 +120,7 @@ Fm.Basic.prototype.off = function(event, handler){
 		   throw new Error('provided handler without event identifier');
 		}
 	}
-	// no event found
+	// no event found do nothing return this
 	if (!this.__events[event]) {
 		return this;
 	}

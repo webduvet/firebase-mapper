@@ -102,7 +102,7 @@ Fm.Model = function(ref, blueprint){
 	}
 
 	/**
-	 * sets the list within the Model - most likely it is finite list of references
+	 * sets the list within the Model TODO perhaps not allow this ???
 	 *
 	 * @param {string} property descriptor - tke key
 	 * @param {Array || Fm.List}
