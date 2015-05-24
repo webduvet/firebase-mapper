@@ -1,7 +1,7 @@
 # firebase-mapper
 ![Build Status](https://travis-ci.org/webduvet/firebase-mapper.svg?branch=master)
 
-Development version
+Development version, this README is old.., use with care
 
 
 Simple data mapper for firebase. Encapsulate the Firebase reference and the data model stored under the reference. firebase-mapper as well
