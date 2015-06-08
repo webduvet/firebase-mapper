@@ -10,10 +10,8 @@
 
 	// Create a refeence to this
 	var Fm = function(config){
-
 	};
-
-	var isNode = false;
+	root.Fm = Fm;
 
 	// Export the Underscore object for **CommonJS**, with backwards-compatibility
 	// for the old `require()` API. If we're not in CommonJS, add `_` to the
@@ -22,13 +20,10 @@
 		Fm.Firebase = require ('firebase');
 		Fm.Db = require ('firebase');
 		module.exports = Fm;
-		root.Fm = Fm;
-		isNode = true;
 	} else {
 		if (!Firebase) throw new Error('Firebase not found');
 		Fm.Firebase = Firebase || false;
 		Fm.Db = Firebase;
-		root.Fm = Fm;
 	}
 })();
 
