@@ -32,11 +32,14 @@ Firebase behaves in the very same way
 
 	ref.set({prop1: null, prop2, "sample"});
 
-will propagate only `prop2` into DB and subsequently when retrieveing from db the object does not contain `prop1`. Of the property is added in later stage it will cause
+The above will propagate only `prop2` into DB and subsequently when retrieveing from db the object does not contain `prop1`. Of the property is added in later stage it will cause
 to break hidden class and hinders the over performance. 
 
-The Model representation is created from blueprint with all the optional and possible fields, thus the objects shape will never change and can be optimizes 
+The Model representation is created from blueprint with all the optional and possible fields, thus the objects shape will never change and can be optimizes. Once the model object is created
+and instantiated with values from database, even if the database does not contain the entire object it will have the missing properties set to null. The object will be complete with
+no further suprises.  
 [see hidden class]https://developers.google.com/v8/design
+TODO possible option to lock the model so any attempt to extend it would fail - (look into Crockford way of treating objects)
 
 
 ## Solution
@@ -60,7 +63,11 @@ via npm
 ## API 
 
 ### Init
-ModelFactory needs to be instantiated with valid db reference like
+The Fm singleton is initialized with one database connection and subsequently all objects created by the factories enclosed in Fm namespace
+inherit this database connection. 
+TODO implement this thoroughly!!!!
+
+Factory:
 creates the factory with reference and provided blueprint. 
 
 	var factory = new ModelFactory(new Firebase('url'), blueprint);
